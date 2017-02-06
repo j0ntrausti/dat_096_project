@@ -1,2 +1,6 @@
 # dat_096_project
-Just for Lolz 
+
+In this folder we have;
+
+
+Filter.vhd: The LP digital filter
