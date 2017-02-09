@@ -9,7 +9,7 @@ use ieee.numeric_std.all;
 
 entity filter is 
 --jag bör ändra dessa generic värden för eller senare
-	generic(Width	:integer 	:=8;
+	generic(Width	:integer 	:=12;
 		N :integer	:=4);
 	port(	reset:STD_LOGIC;
            start:STD_LOGIC;
@@ -42,31 +42,12 @@ begin
 			end if;
 		end loop;
 
-		t(0)<="000000000000";
-		t(1)<="000000000010";
-		t(2)<="000000000111";
-		t(3)<="000000001001";
-		t(4)<="000000000000";
-		t(5)<="111111100111";
-		t(6)<="111111001010";
-		t(7)<="111111000111";
-		t(8)<="000000000000";
-		t(9)<="000010000010";
-		t(10)<="000100101111";
-		t(11)<="000111000100";
-		t(12)<="001000000000";
-		t(13)<="000111000100";
-		t(14)<="000100101111";
-		t(15)<="000010000010";
-		t(16)<="000000000000";
-		t(17)<="111111000111";
-		t(18)<="111111001010";
-		t(19)<="111111100111";
-		t(20)<="000000000000";
-		t(21)<="000000001001";
-		t(22)<="000000000111";
-		t(23)<="000000000010";
-		t(24)<="000000000000";
+		t(0)<="111110110000";
+		t(1)<="000000111010";
+		t(2)<="000000111010";
+		t(3)<="111110110000";
+		
+
 	elsif (rising_edge(clk)) then		
 		if ((start='1' and onGoing='0')) then--start the filter calculation
 			finished<='0';
@@ -79,7 +60,7 @@ begin
 				i<=0;
 				onGoing<='0';
 				finished<='1';
-				y<=std_logic_vector((signed(xL(i-1))*signed(t(i))+signed(y_s)) sll 1);--sll 1 makes sure that the output format is 1,15 not 1,14
+				y<=std_logic_vector((signed(xL(i-1))*signed(t(i))+signed(y_s)) );--sll 1 makes sure that the output format is 1,15 not 1,14 (maybe need to sll 1)sll 1
 
 				for j in 0 to N-2 loop--Swap the x-array
 					if (j<(N-2)) then
