@@ -3,26 +3,34 @@
 clear all
 close all
 %stuff
+prompt = 'How much decimation for block?';
+x = input(prompt);
+prompt = 'How much decimation for channel?';
+y = input(prompt);
 
 k = 1000; % factors
 M = 1000000; % factors
 R = 48; % sampling vs. message freq. ratio
 
-dp = 0.011; %ripple in passband, need to find good figure
-ds = 0.01778; %-70 dB suppresion in the stop band
-ft = 6*M; %R*f_c; % at least....
-fs = 130*k;
-fp = 125*k; % sampling rate(Hz)
+ap = 0.5; % dB peak passband ripple max amount
+as = 65; % dB stopband attenuation min amount
+
+dp = 1 - 10^(-ap/20); %ripple in passband, need to find good figure
+ds = 10^(-as/20); %dB suppresion in the stop band
+ft = [6*M/x 6*M/(y)]; %R*f_c; % at least....
+fs = [125*k 18.75*k] ;
+    
+fp = [118.75*k 12.5*k];  %  rate(Hz) possible 118.75
 
 
 
 % Keiser
 
-N_kay = (-20*log10(sqrt(dp*ds))-13)/(14.6*(fs-fp)/(ft));
+N_kay = (-20*log10(sqrt(dp*ds))-13)./(14.6.*(fs-fp)./(ft));
 
 % Bellanger
 
-N_Bell = (-(2*log10(10*ds*dp))/(3*(fs-fp)/(ft)))-1;
+N_Bell = (-(2*log10(10*ds*dp))./(3.*(fs-fp)./(ft)))-1;
 
 % Hartmann (slighty more accurate)
 
@@ -42,19 +50,18 @@ D = (a1*log10(dp)^2 + a2*log10(dp) + a3)*log10(ds) - (a4*log10(dp)^2 + a5*log10(
 
 
 F = b1 + b2*( log10(dp) - log10(ds) );
-N_hard = (D-F*((fs-fp)/(ft))^2)/((fs-fp)/(ft));
+N_hard = (D-F.*((fs-fp)./(ft)).^2)./((fs-fp)./(ft));
 
 
 
-
-prompt = 'How much decimation?';
-x = input(prompt);
 
     display('Keiser')
-    display(N_kay/x)
+    display(N_kay)
     display('Bellanger')
-    display(N_Bell/x)
+    display(N_Bell)
     display('Hartmann')
-    display(N_hard/x)
+    display(N_hard)
+
+    
 
    
