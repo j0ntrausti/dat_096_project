@@ -3,10 +3,10 @@
 clear all
 close all
 %stuff
-prompt = 'How much decimation for block?';
-x = input(prompt);
-prompt = 'How much decimation for channel?';
-y = input(prompt);
+%prompt = 'How much decimation for block?';
+%x = input(prompt);
+%prompt = 'How much decimation for channel?';
+%y = input(prompt);
 
 k = 1000; % factors
 M = 1000000; % factors
@@ -17,8 +17,8 @@ as = 65; % dB stopband attenuation min amount
 
 dp = 1 - 10^(-ap/20); %ripple in passband, need to find good figure
 ds = 10^(-as/20); %dB suppresion in the stop band
-ft = [6*M/x 6*M/(y)]; %R*f_c; % at least....
-fs = [125*k 18.75*k] ;
+ft = [6*M 250*k]; %R*f_c; % at least....
+fs = [131.25*k 18.75*k] ;
     
 fp = [118.75*k 12.5*k];  %  rate(Hz) possible 118.75
 
