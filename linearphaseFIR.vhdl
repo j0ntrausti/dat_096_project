@@ -4,7 +4,7 @@
 --							N = number of tabs   
 -- Takes in, generic values width (nr. of bits), N number of tabs, x[n]. 
 -- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jón Trausti & Raja
+-- Authors: JÃ³n Trausti & Raja
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -15,8 +15,8 @@ entity linearphaseFIR is
 	port(	reset:STD_LOGIC;
            start:STD_LOGIC;
            clk:STD_LOGIC;
-           x:IN STD_LOGIC_VECTOR(WIDTH-1 DOWNTO 0);
-           y:OUT STD_LOGIC_VECTOR(2*WIDTH-1 DOWNTO 0);
+           x:IN signed(WIDTH-1 DOWNTO 0);
+           y:OUT signed(2*WIDTH-1 DOWNTO 0);
            finished:OUT STD_LOGIC);
 end linearphaseFIR;
 
@@ -29,11 +29,11 @@ signal i	:integer range 0 to N; --index for how many clkcykles the calculation h
 
 -- For our x's
 -- (2*(N-1)-2) is the last X, yeah I've done the calc right, unless I'm wrong (haven't tested) 
-type xLArray is array (0 to (2*(N-1)-2)) of std_logic_vector(width-1 downto 0);
+type xLArray is array (0 to (2*(N-1)-2)) of signed(width-1 downto 0);
 signal xL	:xLArray;
 
 -- For the tabs
-type tLArray is array (0 to N-1) of std_logic_vector(width-1 downto 0);
+type tLArray is array (0 to N-1) of signed(width-1 downto 0);
 signal t	:tLArray;
 
 
@@ -41,7 +41,7 @@ signal t	:tLArray;
 
 -- Old signals
 
-signal y_s	:std_logic_vector(2*width-1 downto 0);--temporary output
+signal y_s	:signed(2*width-1 downto 0);--temporary output
 
 begin
 
@@ -67,7 +67,7 @@ begin
 		if (start='1' AND onGoing='0') then
 			finished<='0';
 			onGoing<='1';
-			y_s<=std_logic_vector((signed(xL((2*(N-1)-2))) + signed(x))*signed(t(0)));
+			y_s<=(xL((2*(N-1)-2)) + x)*t(0);
 			i<=1;	
 		elsif (ongoing='1') then
 			-- First Case
@@ -76,7 +76,7 @@ begin
 				i<=0;
 				onGoing<='0';
 				finished<='1';
-				y<=std_logic_vector((signed(xL(i-1))*signed(t(i))+signed(y_s))); -- maybe I need to shift it??
+				y<=((xL(i-1))*(t(i))+(y_s)); -- maybe I need to shift it??
 				for j in 0 to (2*(N-1)-2) loop--Swap the x-array
 					if (j<(2*(N-1)-2)) then
 						xL((2*(N-1)-2)-j)<=xL((2*(N-1)-3)-j);
@@ -86,7 +86,7 @@ begin
 				end loop;
 			else
 				
-				y_s<=std_logic_vector((signed(xL(i-1)) + signed(xL((2*(N-1)-3-i))))*signed(t(i))+signed(y_s));		
+				y_s<=((xL(i-1) + xL(2*(N-1)-3-i))*t(i)+y_s);		
 				i<=i+1;
 				
 			end if;	
