@@ -1,3 +1,4 @@
+
 -- This is a Linear phase FIR filter of type 1. Has N coeff. and N-1 inputs. 
 -- The filter is written generic so it is defined as;
 --							Width = number of bits
@@ -76,7 +77,7 @@ begin
 				i<=0;
 				onGoing<='0';
 				finished<='1';
-				y<=((xL(i-1))*(t(i))+(y_s)); -- maybe I need to shift it??
+				y<=(((xL(i-1))*(t(i))+(y_s)) sll 1); -- maybe I need to shift it??
 				for j in 0 to (2*(N-1)-2) loop--Swap the x-array
 					if (j<(2*(N-1)-2)) then
 						xL((2*(N-1)-2)-j)<=xL((2*(N-1)-3)-j);
