@@ -14,7 +14,7 @@ as = 65; % dB stopband attenuation min amount
 dp = 1 - 10^(-ap/20); %ripple in passband, need to find good figure
 ds = 10^(-as/20); %dB suppresion in the stop band
 
-ft = 6*M ; %R*f_c; % at least....
+ft = 100*M/17 ; %R*f_c; % at least....
 ft2 = 250*k;
 
 fs = 200*k;
@@ -37,7 +37,10 @@ b2 = firpm(n2+7,fo2,mo2,w2);
 
 N_block = n+20;
 N_channel = n2+7;
-
+comma = ';';
+brackets = '"';
+sth = 't(';
+brah = ')<=';
 fvtool(b);
 fvtool(b2);
 
@@ -51,9 +54,9 @@ for i = 1:length(b)
         out = anti_anti_negative(binarybucket1);
     end
     
-    out1 = num2str(out);
+    out1 = num2str(out(1:16));
     %ArrayBlock(i) = binarybucket1;
-    fprintf(fileID,'%s\n', out1);
+    fprintf(fileID,'%s%d%s%s%s%s%s \n', sth, (i-1), brah, brackets,out1,brackets,comma);
 end
 fclose(fileID);
 
@@ -69,10 +72,10 @@ for j = 1:length(b2)
         out3 = anti_anti_negative(binarybucket2);
     end
     
-    out4 = num2str(out3);
+    out4 = num2str(out3(1:16));
     %ArrayBlock(i) = binarybucket1;
     
-    fprintf(fileID2,'%s \n', out4);
+    fprintf(fileID2,'%s%d%s%s%s%s%s \n', sth, (j-1), brah, brackets,out4,brackets,comma);
 end    
 fclose(fileID2);
 
