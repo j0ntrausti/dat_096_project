@@ -39,38 +39,38 @@ component dds_0_1
   );
 end component;
 
--- -93.75KHz
-component dds_1_1
-PORT (
-    aclk : IN STD_LOGIC;
-    m_axis_data_tvalid : OUT STD_LOGIC;
-    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    m_axis_phase_tvalid : OUT STD_LOGIC; 
-    m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
-  );
-end component;
+---- -93.75KHz
+--component dds_1_1
+--PORT (
+--    aclk : IN STD_LOGIC;
+--    m_axis_data_tvalid : OUT STD_LOGIC;
+--    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+--    m_axis_phase_tvalid : OUT STD_LOGIC; 
+--    m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+--  );
+--end component;
 
--- -62.5KHz
-component dds_2_1
-  PORT (
-     aclk : IN STD_LOGIC;
-     m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
-   );
-end component;
+---- -62.5KHz
+--component dds_2_1
+--  PORT (
+--     aclk : IN STD_LOGIC;
+--     m_axis_data_tvalid : OUT STD_LOGIC;
+--     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+--     m_axis_phase_tvalid : OUT STD_LOGIC; 
+--     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+--   );
+--end component;
 
--- -31.25KHz   
-component dds_3_1
-  PORT (
-     aclk : IN STD_LOGIC;
-     m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
-   );   
-end component;
+---- -31.25KHz   
+--component dds_3_1
+--  PORT (
+--     aclk : IN STD_LOGIC;
+--     m_axis_data_tvalid : OUT STD_LOGIC;
+--     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+--     m_axis_phase_tvalid : OUT STD_LOGIC; 
+--     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+--   );   
+--end component;
 
 -- 31.25KHz
 component dds_5_1
@@ -110,20 +110,20 @@ signal data_valid_0 : STD_LOGIC;
 signal phase_valid_0 : STD_LOGIC;
 signal outs_0 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_1  : STD_LOGIC_VECTOR(15 downto 0);
-signal data_valid_1 : STD_LOGIC;
-signal phase_valid_1 : STD_LOGIC;
-signal outs_1 : STD_LOGIC_VECTOR(31 DOWNTO 0);
+--signal angle_1  : STD_LOGIC_VECTOR(15 downto 0);
+--signal data_valid_1 : STD_LOGIC;
+--signal phase_valid_1 : STD_LOGIC;
+--signal outs_1 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_2  : STD_LOGIC_VECTOR(15 downto 0);
-signal data_valid_2 : STD_LOGIC;
-signal phase_valid_2 : STD_LOGIC;
-signal outs_2 : STD_LOGIC_VECTOR(31 DOWNTO 0);
+--signal angle_2  : STD_LOGIC_VECTOR(15 downto 0);
+--signal data_valid_2 : STD_LOGIC;
+--signal phase_valid_2 : STD_LOGIC;
+--signal outs_2 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_3  : STD_LOGIC_VECTOR(15 downto 0);
-signal data_valid_3 : STD_LOGIC;
-signal phase_valid_3 : STD_LOGIC;
-signal outs_3 : STD_LOGIC_VECTOR(31 DOWNTO 0);
+--signal angle_3  : STD_LOGIC_VECTOR(15 downto 0);
+--signal data_valid_3 : STD_LOGIC;
+--signal phase_valid_3 : STD_LOGIC;
+--signal outs_3 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 signal angle_5  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_5 : STD_LOGIC;
@@ -141,13 +141,13 @@ signal phase_valid_7 : STD_LOGIC;
 signal outs_7 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 begin
---DDSS_0_1: dds_0_1 PORT MAP (
---         aclk => clk_250KHz,
---         m_axis_data_tvalid => data_valid_0,
---         m_axis_data_tdata => outs_0,
---         m_axis_phase_tvalid => phase_valid_0,
---         m_axis_phase_tdata => angle_0
---         );
+DDSS_0_1: dds_0_1 PORT MAP (
+         aclk => clk_250KHz,
+         m_axis_data_tvalid => data_valid_0,
+         m_axis_data_tdata => outs_0,
+         m_axis_phase_tvalid => phase_valid_0,
+         m_axis_phase_tdata => angle_0
+         );
 
 --DDSS_1_1: dds_1_1 PORT MAP (
 --         aclk => clk_250KHz,
@@ -199,17 +199,20 @@ DDSS_7_1: dds_7_1 PORT MAP (
 
 --Extract channels THIS IS PROBABLY INCORRECT!!!!
 --edit: now it's maybe more correct
---Sin_0 <= signed(outs_0(WIDTH-1 downto 0));
---Cos_0 <= signed(outs_0(16+WIDTH-1 downto 16));
+Sin_0 <= not signed(outs_0(WIDTH-1 downto 0)) + 1; --invert to negative
+Cos_0 <= signed(outs_0(16+WIDTH-1 downto 16));
 
---Sin_1 <= signed(outs_1(WIDTH-1 downto 0));
---Cos_1 <= signed(outs_1(16+WIDTH-1 downto 16));
+--take signals from dds_7
+Sin_1 <= not signed(outs_7(WIDTH-1 downto 0)) + 1;--invert to negative
+Cos_1 <= signed(outs_7(16+WIDTH-1 downto 16));
 
---Sin_2 <= signed(outs_2(WIDTH-1 downto 0));
---Cos_2 <= signed(outs_2(16+WIDTH-1 downto 16));
+--take signals from dds_6
+Sin_2 <= not signed(outs_6(WIDTH-1 downto 0)) + 1;--invert to negative
+Cos_2 <= signed(outs_6(16+WIDTH-1 downto 16));
 
---Sin_3 <= signed(outs_3(WIDTH-1 downto 0));
---Cos_3 <= signed(outs_3(16+WIDTH-1 downto 16));
+--take signals from dds_5
+Sin_3 <= not signed(outs_5(WIDTH-1 downto 0)) + 1;--invert to negative
+Cos_3 <= signed(outs_5(16+WIDTH-1 downto 16));
 
 Sin_5 <= signed(outs_5(WIDTH-1 downto 0));
 Cos_5 <= signed(outs_5(16+WIDTH-1 downto 16));
