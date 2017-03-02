@@ -443,11 +443,11 @@ PORT MAP(
         out_i => channel_7_block_0_dec_i
         );
 		
-DUMMY_0 <= (others => '0');
-DUMMY_1 <= (others => '0');
-DUMMY_2 <= (others => '0');
-DUMMY_3 <= (others => '0');
-DUMMY_4 <= (others => '0');
+DUMMY_0 <= STD_LOGIC_VECTOR(channel_0_block_0_dec_r);
+DUMMY_1 <= STD_LOGIC_VECTOR(channel_1_block_0_dec_r);
+DUMMY_2 <= STD_LOGIC_VECTOR(channel_2_block_0_dec_r);
+DUMMY_3 <= STD_LOGIC_VECTOR(channel_3_block_0_dec_r);
+DUMMY_4 <= STD_LOGIC_VECTOR(channel_4_block_0_dec_r);
 DUMMY_5 <= STD_LOGIC_VECTOR(channel_5_block_0_dec_r);
 DUMMY_6 <= STD_LOGIC_VECTOR(channel_6_block_0_dec_r);
 DUMMY_7 <= STD_LOGIC_VECTOR(channel_7_block_0_dec_r);
