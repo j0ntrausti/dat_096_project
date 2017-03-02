@@ -11,8 +11,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity FastFilter is 
-	generic(Width	:integer 	:=16;
-		N :integer	:=100);
+	generic(Width	:integer 	:=8;
+		N :integer	:=4);
 	port(	reset:STD_LOGIC;
            clk:STD_LOGIC;
            clk250k:STD_LOGIC;
@@ -20,6 +20,7 @@ entity FastFilter is
            x:IN signed(WIDTH-1 DOWNTO 0);
            y:OUT signed(2*WIDTH-1 DOWNTO 0);
            finished:OUT STD_LOGIC);
+
 end FastFilter;
 
 
@@ -90,30 +91,28 @@ begin
 				y_s <= ((queue2multi(i)*t(i))+y_s);
 				i <= i+1;
 			end if;
-		end if;
-
-		
-		if (clk250k = '1') then			-- 250 kHz not sure about this.... the need for it
+		elsif(clk250k = '1') then			-- 250 kHz not sure about this.... the need for it
 			finished_sig <= '0';
 			finished<='0';
 			i<=0;
 			for j in 0 to N-1 loop
 				queue2multi(j)<= MiddleAdder(j);
 			end loop;
+			
 		end if;
 
 		if (clk6M='1' AND swapping='0') then    -- 6 MHz
 			
 			
 			swapping<='1';
-
+			y_s <= (others => '0');
 			-- the first adding
 			MiddleAdder(0)<=(xL((2*(N-1)-2)) + x); 
 			-- the last adding
-			MiddleAdder(N-1)<= (xL(N-1));            			
+			MiddleAdder(N-1)<= (xL((N/2)-1));            			
 			-- all the other adding 
 			for j in 1 to N-2 loop
-				MiddleAdder(j)<= (xL(j-1) + xL(2*(N-1)-3-j));
+				MiddleAdder(j)<= (xL(j-1) + xL(2*(N-1)-2-j));
 			end loop;
 
 
