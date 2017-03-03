@@ -346,20 +346,24 @@ PORT MAP(
     );
 
 --Mixer_down_1
+--blocks_undec(0)=block_0_undec_r
+--blocks_undec(1)=block_0_undec_i
+--blocks_undec(2)=block_1_undec_r
+--blocks_undec(3)=block_1_undec_i
 	Mixer_dnw_1: Mixer_down_1    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_6MHz => clk_6MHz,
 		in_r => adc_out,
 		in_i => (others=> '0'),
-		out_r_0 => block_0_undec_r,
-		out_i_0 => block_0_undec_i,
-		out_r_1 => block_1_undec_r,
-		out_i_1 => block_1_undec_i,
-		out_r_2 => block_2_undec_r,
-		out_i_2 => block_2_undec_i,
-		out_r_3 => block_3_undec_r,
-		out_i_3 => block_3_undec_i
+		out_r_0 => blocks_undec(0),
+		out_i_0 => blocks_undec(1),
+		out_r_1 => blocks_undec(2),
+		out_i_1 => blocks_undec(3),
+		out_r_2 => blocks_undec(4),
+		out_i_2 => blocks_undec(5),
+		out_r_3 => blocks_undec(6),
+		out_i_3 => blocks_undec(7)
 		);
 
 --DEC_1_block_0
@@ -370,35 +374,44 @@ PORT MAP(
 	    clk_6MHz => clk_6MHz,
 		clk_250KHz => clk_250KHz,
 		reset => reset,
-		in_r => block_0_undec_r,
-		in_i => block_0_undec_i,
-		out_r => block_0_dec_r,
-		out_i => block_0_dec_i
+		in_r => blocks_undec(0),
+		in_i => blocks_undec(1),
+		out_r => blocks_dec(0),
+		out_i => blocks_dec(1)
 		);
 
 --Mixer_down_2_block_0
+--signals_undec(0)(0) = channel_0_block_0_undec_r
+--signals_undec(0)(1) = channel_0_block_0_undec_i
+--signals_undec(0)(2) = channel_0_block_1_undec_r
+--signals_undec(0)(3) = channel_0_block_1_undec_i
+--signals_undec(1)(0) = channel_1_block_0_undec_r
+--signals_undec(1)(1) = channel_1_block_0_undec_i
+--signals_undec(1)(2) = channel_1_block_1_undec_r
+--signals_undec(1)(3) = channel_1_block_1_undec_i
+--etc...
 	Mixer_dnw_2_block_0: Mixer_down_2    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_250KHz => clk_250KHz,
-		in_r => block_0_dec_r,
-		in_i => block_0_dec_i,
-		out_r_0 => channel_0_block_0_undec_r,
-		out_i_0 => channel_0_block_0_undec_i,
-		out_r_1 => channel_1_block_0_undec_r,
-		out_i_1 => channel_1_block_0_undec_i,
-		out_r_2 => channel_2_block_0_undec_r,
-		out_i_2 => channel_2_block_0_undec_i,
-		out_r_3 => channel_3_block_0_undec_r,
-		out_i_3 => channel_3_block_0_undec_i,
-		out_r_4 => channel_4_block_0_undec_r,
-		out_i_4 => channel_4_block_0_undec_i,
-		out_r_5 => channel_5_block_0_undec_r,
-		out_i_5 => channel_5_block_0_undec_i,
-		out_r_6 => channel_6_block_0_undec_r,
-		out_i_6 => channel_6_block_0_undec_i,
-		out_r_7 => channel_7_block_0_undec_r,
-		out_i_7 => channel_7_block_0_undec_i
+		in_r => blocks_dec(0),
+		in_i => blocks_dec(1),
+		out_r_0 => signals_undec(0)(0),
+		out_i_0 => signals_undec(0)(1),
+		out_r_1 => signals_undec(0)(2),
+		out_i_1 => signals_undec(0)(3),
+		out_r_2 => signals_undec(0)(4),
+		out_i_2 => signals_undec(0)(5),
+		out_r_3 => signals_undec(0)(6),
+		out_i_3 => signals_undec(0)(7),
+		out_r_4 => signals_undec(0)(8),
+		out_i_4 => signals_undec(0)(9),
+		out_r_5 => signals_undec(0)(10),
+		out_i_5 => signals_undec(0)(11),
+		out_r_6 => signals_undec(0)(12),
+		out_i_6 => signals_undec(0)(13),
+		out_r_7 => signals_undec(0)(14),
+		out_i_7 => signals_undec(0)(15)
 		);
 
 --DEC_2_channel_5_block_1
@@ -409,10 +422,10 @@ PORT MAP(
         clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
 		reset => reset,
-		in_r => channel_5_block_0_undec_r,
-		in_i => channel_5_block_0_undec_i,
-		out_r => channel_5_block_0_dec_r,
-		out_i => channel_5_block_0_dec_i
+		in_r => signals_undec(0)(10),
+		in_i => signals_undec(0)(11),
+		out_r => signals_dec(0)(10),
+		out_i => signals_undec(0)(11)
 		);
 
 --DEC_2_channel_6_block_1
@@ -423,10 +436,10 @@ PORT MAP(
         clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
 		reset => reset,
-		in_r => channel_6_block_0_undec_r,
-		in_i => channel_6_block_0_undec_i,
-		out_r => channel_6_block_0_dec_r,
-		out_i => channel_6_block_0_dec_i
+		in_r => signals_undec(0)(12),
+        in_i => signals_undec(0)(13),
+        out_r => signals_dec(0)(12),
+        out_i => signals_dec(0)(13)
 		);
 		
 --DEC_2_channel_7_block_1
@@ -437,19 +450,19 @@ PORT MAP(
         clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
         reset => reset,
-        in_r => channel_7_block_0_undec_r,
-        in_i => channel_7_block_0_undec_i,
-        out_r => channel_7_block_0_dec_r,
-        out_i => channel_7_block_0_dec_i
+        in_r => signals_undec(0)(14),
+        in_i => signals_undec(0)(15),
+        out_r => signals_dec(0)(14),
+        out_i => signals_dec(0)(15)
         );
 		
-DUMMY_0 <= STD_LOGIC_VECTOR(channel_0_block_0_dec_r);
-DUMMY_1 <= STD_LOGIC_VECTOR(channel_1_block_0_dec_r);
-DUMMY_2 <= STD_LOGIC_VECTOR(channel_2_block_0_dec_r);
-DUMMY_3 <= STD_LOGIC_VECTOR(channel_3_block_0_dec_r);
-DUMMY_4 <= STD_LOGIC_VECTOR(channel_4_block_0_dec_r);
-DUMMY_5 <= STD_LOGIC_VECTOR(channel_5_block_0_dec_r);
-DUMMY_6 <= STD_LOGIC_VECTOR(channel_6_block_0_dec_r);
-DUMMY_7 <= STD_LOGIC_VECTOR(channel_7_block_0_dec_r);
+DUMMY_0 <= STD_LOGIC_VECTOR(signals_dec(0)(0));
+DUMMY_1 <= STD_LOGIC_VECTOR(signals_dec(0)(2));
+DUMMY_2 <= STD_LOGIC_VECTOR(signals_dec(0)(4));
+DUMMY_3 <= STD_LOGIC_VECTOR(signals_dec(0)(6));
+DUMMY_4 <= STD_LOGIC_VECTOR(signals_dec(0)(8));
+DUMMY_5 <= STD_LOGIC_VECTOR(signals_dec(0)(10));
+DUMMY_6 <= STD_LOGIC_VECTOR(signals_dec(0)(12));
+DUMMY_7 <= STD_LOGIC_VECTOR(signals_dec(0)(14));
 
 end Behavioral;

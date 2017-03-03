@@ -10,7 +10,7 @@ package Read_package is
 
   constant Blockss   : integer := 4;
   constant Channelss : integer := 8;
-  constant WIDTH   	: integer := 10;
+  constant WIDTH   	: integer := 12;
   
   --even indexses are real parts, odd are imaginary
   type Blocks is array (2*Blockss-1 downto 0) of signed(WIDTH-1 downto 0);
