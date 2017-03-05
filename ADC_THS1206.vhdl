@@ -8,7 +8,7 @@ port(
 CS0_activelow: out std_logic;
 CS1_activehigh: out std_logic;
 
-clk_enable: in std_logic;
+clk_6MHz: in std_logic;
 dig_out: out std_logic_vector (11 downto 0);
 reset: in std_logic;
 data_av: in std_logic;
@@ -30,13 +30,13 @@ begin
 dig_out<= digital_val;
 	
 adc:
-process(clk_enable)
+process(clk_6MHz)
 
 
 begin
 
 
-   if rising_edge(clk_enable) then
+   if rising_edge(clk_6MHz) then
       if reset = '1' then
              CS0_activelow	<= '0' ;
 		     CS1_activehigh	<= '1' ;
