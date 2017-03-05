@@ -35,7 +35,7 @@ port(
 CS0_activelow: out std_logic;
 CS1_activehigh: out std_logic;
 --clk: in std_logic;
-clk_enable: in std_logic;
+clk_6MHz: in std_logic;
 dig_out: out std_logic_vector (11 downto 0);
 reset: in std_logic;
 data_av: in std_logic;
@@ -62,7 +62,7 @@ comp_clk: component samplefreq_clk_6Mhz
 comp_adc : component ADC_THS1206 
 			port map ( 		CS0_activelow =>CS0,
 							CS1_activehigh =>CS1,
-							clk_enable=>Clk_enable, 
+							clk_6MHz=>Clk_enable, 
 							dig_out=> DIG_OUT_TOP,
 							reset=>Reset,
 							data_av=>Data_av,
