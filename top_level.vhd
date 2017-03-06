@@ -176,9 +176,11 @@ signal blocks_unpol: Blocks; 		--2D array
 --IPOL_1
 signal blocks_pol: Blocks; 			--2D array
 --Mixer_up_2
-signal dac_unpol : signed(WIDTH-1 downto 0);
+signal dac_unpol_r : signed(WIDTH-1 downto 0);
+signal dac_unpol_i : signed(WIDTH-1 downto 0);
 --IPOL_2
-signal dac_pol : signed(WIDTH-1 downto 0);
+signal dac_pol_r : signed(WIDTH-1 downto 0);
+signal dac_pol_i : signed(WIDTH-1 downto 0);
 --DAC component
 
 begin
@@ -306,32 +308,83 @@ PORT MAP(
         out_r => signals_dec(0)(14),
         out_i => signals_dec(0)(15)
         );
+        
+--Redirect (doesn't exist yet)
+signals_redirected <= signals_dec;
+--signals_redirected(0)(0) <= signals_dec(0)(0)
+--signals_redirected(0)(1) <= signals_dec(0)(1)
+--signals_redirected(0)(2) <= signals_dec(0)(2)
+--signals_redirected(0)(3) <= signals_dec(0)(3)
+--signals_redirected(0)(4) <= signals_dec(0)(4)
+--signals_redirected(0)(5) <= signals_dec(0)(5)
+--signals_redirected(0)(6) <= signals_dec(0)(6)
+--signals_redirected(0)(7) <= signals_dec(0)(7)
+--signals_redirected(0)(8) <= signals_dec(0)(8)
+--signals_redirected(0)(9) <= signals_dec(0)(9)
+--signals_redirected(0)(10) <= signals_dec(0)(10)
+--signals_redirected(0)(11) <= signals_dec(0)(11)
+--signals_redirected(0)(12) <= signals_dec(0)(12)
+--signals_redirected(0)(13) <= signals_dec(0)(13)
+--signals_redirected(0)(14) <= signals_dec(0)(14)
+--signals_redirected(0)(15) <= signals_dec(0)(15)
  
- --first mixer up block_0       
-	Mixer_up_2_block_0: Mixer_up_1    
+--first mixer up block_0       
+Mixer_up_1_block_0: Mixer_up_1    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_250KHz => clk_250KHz,
-		in_r_0 => signals_dec(0)(0),
-		in_i_0 => signals_dec(0)(1),
-		in_r_1 => signals_dec(0)(2),
-		in_i_1 => signals_dec(0)(3),
-		in_r_2 => signals_dec(0)(4),
-		in_i_2 => signals_dec(0)(5),
-		in_r_3 => signals_dec(0)(6),
-		in_i_3 => signals_dec(0)(7),
-		in_r_4 => signals_dec(0)(8),
-		in_i_4 => signals_dec(0)(9),
-		in_r_5 => signals_dec(0)(10),
-		in_i_5 => signals_dec(0)(11),
-		in_r_6 => signals_dec(0)(12),
-		in_i_6 => signals_dec(0)(13),
-		in_r_7 => signals_dec(0)(14),
-		in_i_7 => signals_dec(0)(15),
-		out_r => blocks_dec(0),
-		out_i => blocks_dec(1)
+		in_r_0 => signals_redirected(0)(0),
+		in_i_0 => signals_redirected(0)(1),
+		in_r_1 => signals_redirected(0)(2),
+		in_i_1 => signals_redirected(0)(3),
+		in_r_2 => signals_redirected(0)(4),
+		in_i_2 => signals_redirected(0)(5),
+		in_r_3 => signals_redirected(0)(6),
+		in_i_3 => signals_redirected(0)(7),
+		in_r_4 => signals_redirected(0)(8),
+		in_i_4 => signals_redirected(0)(9),
+		in_r_5 => signals_redirected(0)(10),
+		in_i_5 => signals_redirected(0)(11),
+		in_r_6 => signals_redirected(0)(12),
+		in_i_6 => signals_redirected(0)(13),
+		in_r_7 => signals_redirected(0)(14),
+		in_i_7 => signals_redirected(0)(15),
+		out_r => blocks_unpol(0),
+		out_i => blocks_unpol(1)
 		);
 		
+--first IPOL stage (doesn't exist yet)
+
+blocks_pol(0) <= blocks_unpol(0);
+blocks_pol(1) <= blocks_unpol(1);
+blocks_pol(2) <= blocks_unpol(2);
+blocks_pol(3) <= blocks_unpol(3);
+blocks_pol(4) <= blocks_unpol(4);
+blocks_pol(5) <= blocks_unpol(5);
+blocks_pol(6) <= blocks_unpol(6);
+blocks_pol(7) <= blocks_unpol(7);
+
+--Second mixer up block
+Mixer_up_2_block_0: Mixer_up_2    
+	GENERIC MAP(WIDTH => WIDTH)
+	PORT MAP( 
+		clk_250KHz => clk_250KHz,
+		in_r_0 => blocks_pol(0),
+		in_i_0 => blocks_pol(1),
+		in_r_1 => blocks_pol(2),
+		in_i_1 => blocks_pol(3),
+		in_r_2 => blocks_pol(4),
+		in_i_2 => blocks_pol(5),
+		in_r_3 => blocks_pol(6),
+		in_i_3 => blocks_pol(7),
+		out_r => dac_unpol_r,
+		out_i => dac_unpol_i
+		);
+		
+--second IPOL stage (doesn't exist yet)
+ dac_pol_r <= dac_unpol_r;
+ dac_pol_i <= dac_unpol_i;
+ 	
 DUMMY_0 <= STD_LOGIC_VECTOR(signals_dec(0)(0));
 DUMMY_1 <= STD_LOGIC_VECTOR(signals_dec(0)(2));
 DUMMY_2 <= STD_LOGIC_VECTOR(signals_dec(0)(4));
