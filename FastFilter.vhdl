@@ -13,10 +13,10 @@ use ieee.numeric_std.all;
 entity FastFilter is 
 	generic(Width	:integer 	:=8;
 		N :integer	:=4);
-	port(	reset:STD_LOGIC;
-           clk:STD_LOGIC;
-           clk250k:STD_LOGIC;
-           clk6M:STD_LOGIC;
+	port(	reset:IN STD_LOGIC;
+           clk:IN STD_LOGIC;
+           clk250k:IN STD_LOGIC;
+           clk6M:IN STD_LOGIC;
            x:IN signed(WIDTH-1 DOWNTO 0);
            y:OUT signed(2*WIDTH-1 DOWNTO 0);
            finished:OUT STD_LOGIC);
