@@ -10,21 +10,21 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity FastFilter is 
+entity ChannelFilter is 
 	generic(Width	:integer 	:=8;
 		N :integer	:=4);
-	port(	reset:STD_LOGIC;
-           clk:STD_LOGIC;
-           clk250k:STD_LOGIC;
-           clk6M:STD_LOGIC;
+	port(	reset:IN STD_LOGIC;
+           clk:IN STD_LOGIC;
+           clk250k:IN STD_LOGIC;
+           clk6M:IN STD_LOGIC;
            x:IN signed(WIDTH-1 DOWNTO 0);
            y:OUT signed(WIDTH-1 DOWNTO 0);
            finished:OUT STD_LOGIC);
-end FastFilter;
+end ChannelFilter;
 
 
 
-architecture behaiv_arch of FastFilter is
+architecture behaiv_arch of ChannelFilter is
 
 
 -- New signals
