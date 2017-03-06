@@ -37,7 +37,7 @@ component ADC
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_6MHz : in STD_LOGIC;
        reset 	: in STD_LOGIC;
-       adc_out 	: out signed(WIDTH-1 downto 0)
+       adc_out 	: out STD_LOGIC_VECTOR(WIDTH-1 downto 0)
        );
 end component;
 
@@ -160,7 +160,7 @@ signal clk_250KHz : std_logic :='0';
 
 ---VVVV SIGNAL PATH VVVV----
 --ADC component
-signal adc_out : signed(WIDTH-1 downto 0);
+signal adc_out : STD_LOGIC_VECTOR(WIDTH-1 downto 0);
 --mixer_down_1
 signal blocks_undec: Blocks; 		--2D array
 --DEC_1
@@ -217,7 +217,7 @@ PORT MAP(
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_6MHz => clk_6MHz,
-		in_r => adc_out,
+		in_r => signed(adc_out),
 		in_i => (others=> '0'),
 		out_r_0 => blocks_undec(0),
 		out_i_0 => blocks_undec(1),
