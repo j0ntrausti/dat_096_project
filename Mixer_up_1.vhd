@@ -5,8 +5,6 @@ use ieee.numeric_std.all;
 entity Mixer_down_2 is
 GENERIC (WIDTH:INTEGER:=10);
 Port ( clk_250KHz : in STD_LOGIC;
-       out_r : out signed(WIDTH-1 downto 0);
-       out_i : out signed(WIDTH-1 downto 0);
        in_r_0 : in signed(WIDTH-1 downto 0);
        in_i_0 : in signed(WIDTH-1 downto 0);
        in_r_1 : in signed(WIDTH-1 downto 0);
@@ -22,7 +20,9 @@ Port ( clk_250KHz : in STD_LOGIC;
        in_r_6 : in signed(WIDTH-1 downto 0);
        in_i_6 : in signed(WIDTH-1 downto 0);
        in_r_7 : in signed(WIDTH-1 downto 0);
-       in_i_7 : in signed(WIDTH-1 downto 0)
+       in_i_7 : in signed(WIDTH-1 downto 0);
+       out_r : out signed(WIDTH-1 downto 0);
+       out_i : out signed(WIDTH-1 downto 0)
        );
 end Mixer_down_2;
 
