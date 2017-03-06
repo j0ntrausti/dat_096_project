@@ -141,7 +141,7 @@ signal phase_valid_7 : STD_LOGIC;
 signal outs_7 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 begin
-DDSS_0_1: dds_0_1 PORT MAP (
+DDS_0: dds_0_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_0,
          m_axis_data_tdata => outs_0,
@@ -173,7 +173,7 @@ DDSS_0_1: dds_0_1 PORT MAP (
 --         m_axis_phase_tdata => angle_3
 --         );
          
-DDSS_5_1: dds_5_1 PORT MAP (
+DDS_5: dds_5_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_5,
          m_axis_data_tdata => outs_5,
@@ -181,7 +181,7 @@ DDSS_5_1: dds_5_1 PORT MAP (
          m_axis_phase_tdata => angle_5
          );
 
-DDSS_6_1: dds_6_1 PORT MAP (
+DDS_6: dds_6_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_6,
          m_axis_data_tdata => outs_6,
@@ -189,7 +189,7 @@ DDSS_6_1: dds_6_1 PORT MAP (
          m_axis_phase_tdata => angle_6
          );
          
-DDSS_7_1: dds_7_1 PORT MAP (
+DDS_7: dds_7_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_7,
          m_axis_data_tdata => outs_7,
