@@ -27,9 +27,9 @@ component dds_0_3
  PORT (
     aclk : IN STD_LOGIC;
     m_axis_data_tvalid : OUT STD_LOGIC;
-    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    m_axis_phase_tvalid : OUT STD_LOGIC; 
-    m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    --m_axis_phase_tvalid : OUT STD_LOGIC; 
+    --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
   );
 end component;
 
@@ -38,9 +38,9 @@ component dds_1_3
 PORT (
     aclk : IN STD_LOGIC;
     m_axis_data_tvalid : OUT STD_LOGIC;
-    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    m_axis_phase_tvalid : OUT STD_LOGIC; 
-    m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    --m_axis_phase_tvalid : OUT STD_LOGIC; 
+    --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
   );
 end component;
 
@@ -49,9 +49,9 @@ component dds_2_3
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );
 end component;
 
@@ -60,63 +60,63 @@ component dds_3_3
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );   
 end component;
 
-signal angle_0  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_0  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_0 : STD_LOGIC;
-signal phase_valid_0 : STD_LOGIC;
+--signal phase_valid_0 : STD_LOGIC;
 signal outs_0 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_1  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_1  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_1 : STD_LOGIC;
-signal phase_valid_1 : STD_LOGIC;
+--signal phase_valid_1 : STD_LOGIC;
 signal outs_1 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_2  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_2  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_2 : STD_LOGIC;
-signal phase_valid_2 : STD_LOGIC;
+--signal phase_valid_2 : STD_LOGIC;
 signal outs_2 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_3  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_3  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_3 : STD_LOGIC;
-signal phase_valid_3 : STD_LOGIC;
+--signal phase_valid_3 : STD_LOGIC;
 signal outs_3 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 begin
 DDS_0: dds_0_3 PORT MAP (
          aclk => clk_6MHz,
          m_axis_data_tvalid => data_valid_0,
-         m_axis_data_tdata => outs_0,
-         m_axis_phase_tvalid => phase_valid_0,
-         m_axis_phase_tdata => angle_0
+         m_axis_data_tdata => outs_0
+         --m_axis_phase_tvalid => phase_valid_0,
+         --m_axis_phase_tdata => angle_0
          );
 
 DDS_1: dds_1_3 PORT MAP (
          aclk => clk_6MHz,
          m_axis_data_tvalid => data_valid_1,
-         m_axis_data_tdata => outs_1,
-         m_axis_phase_tvalid => phase_valid_1,
-         m_axis_phase_tdata => angle_1
+         m_axis_data_tdata => outs_1
+         --m_axis_phase_tvalid => phase_valid_1,
+         --m_axis_phase_tdata => angle_1
          );
 
 DDS_2: dds_2_3 PORT MAP (
          aclk => clk_6MHz,
          m_axis_data_tvalid => data_valid_2,
-         m_axis_data_tdata => outs_2,
-         m_axis_phase_tvalid => phase_valid_2,
-         m_axis_phase_tdata => angle_2
+         m_axis_data_tdata => outs_2
+         --m_axis_phase_tvalid => phase_valid_2,
+         --m_axis_phase_tdata => angle_2
          );
 
 DDS_3: dds_3_3 PORT MAP (
          aclk => clk_6MHz,
          m_axis_data_tvalid => data_valid_3,
-         m_axis_data_tdata => outs_3,
-         m_axis_phase_tvalid => phase_valid_3,
-         m_axis_phase_tdata => angle_3
+         m_axis_data_tdata => outs_3
+         --m_axis_phase_tvalid => phase_valid_3,
+         --m_axis_phase_tdata => angle_3
          );
 
 --Extract channels THIS IS PROBABLY INCORRECT!!!! 

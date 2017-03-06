@@ -33,9 +33,9 @@ component dds_0_1
  PORT (
     aclk : IN STD_LOGIC;
     m_axis_data_tvalid : OUT STD_LOGIC;
-    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    m_axis_phase_tvalid : OUT STD_LOGIC; 
-    m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+    m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    --m_axis_phase_tvalid : OUT STD_LOGIC; 
+    --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
   );
 end component;
 
@@ -77,9 +77,9 @@ component dds_5_1
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );   
 end component;
 
@@ -88,9 +88,9 @@ component dds_6_1
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );   
 end component;
 
@@ -99,15 +99,15 @@ component dds_7_1
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );   
 end component;
 
-signal angle_0  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_0  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_0 : STD_LOGIC;
-signal phase_valid_0 : STD_LOGIC;
+--signal phase_valid_0 : STD_LOGIC;
 signal outs_0 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 --signal angle_1  : STD_LOGIC_VECTOR(15 downto 0);
@@ -125,28 +125,28 @@ signal outs_0 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 --signal phase_valid_3 : STD_LOGIC;
 --signal outs_3 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_5  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_5  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_5 : STD_LOGIC;
-signal phase_valid_5 : STD_LOGIC;
+--signal phase_valid_5 : STD_LOGIC;
 signal outs_5 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_6  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_6  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_6 : STD_LOGIC;
-signal phase_valid_6 : STD_LOGIC;
+--signal phase_valid_6 : STD_LOGIC;
 signal outs_6 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
-signal angle_7  : STD_LOGIC_VECTOR(15 downto 0);
+--signal angle_7  : STD_LOGIC_VECTOR(15 downto 0);
 signal data_valid_7 : STD_LOGIC;
-signal phase_valid_7 : STD_LOGIC;
+--signal phase_valid_7 : STD_LOGIC;
 signal outs_7 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 begin
 DDS_0: dds_0_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_0,
-         m_axis_data_tdata => outs_0,
-         m_axis_phase_tvalid => phase_valid_0,
-         m_axis_phase_tdata => angle_0
+         m_axis_data_tdata => outs_0
+         --m_axis_phase_tvalid => phase_valid_0,
+         --m_axis_phase_tdata => angle_0
          );
 
 --DDSS_1_1: dds_1_1 PORT MAP (
@@ -176,25 +176,25 @@ DDS_0: dds_0_1 PORT MAP (
 DDS_5: dds_5_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_5,
-         m_axis_data_tdata => outs_5,
-         m_axis_phase_tvalid => phase_valid_5,
-         m_axis_phase_tdata => angle_5
+         m_axis_data_tdata => outs_5
+         --m_axis_phase_tvalid => phase_valid_5,
+         --m_axis_phase_tdata => angle_5
          );
 
 DDS_6: dds_6_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_6,
-         m_axis_data_tdata => outs_6,
-         m_axis_phase_tvalid => phase_valid_6,
-         m_axis_phase_tdata => angle_6
+         m_axis_data_tdata => outs_6
+         --m_axis_phase_tvalid => phase_valid_6,
+         --m_axis_phase_tdata => angle_6
          );
          
 DDS_7: dds_7_1 PORT MAP (
          aclk => clk_250KHz,
          m_axis_data_tvalid => data_valid_7,
-         m_axis_data_tdata => outs_7,
-         m_axis_phase_tvalid => phase_valid_7,
-         m_axis_phase_tdata => angle_7
+         m_axis_data_tdata => outs_7
+         --m_axis_phase_tvalid => phase_valid_7,
+         --m_axis_phase_tdata => angle_7
          );      
 
 --Extract channels THIS IS PROBABLY INCORRECT!!!!
