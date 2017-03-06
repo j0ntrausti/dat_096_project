@@ -17,44 +17,50 @@ end DEC_2;
 
 architecture Behavioral of DEC_2 is
 
-component filter
+component ChannelFilter
 GENERIC (WIDTH:INTEGER:=12;
-         N: INTEGER :=4);
-	port(reset      :STD_LOGIC;
-         start      :STD_LOGIC;
-         clk        :STD_LOGIC;
-         x          :IN STD_LOGIC_VECTOR(WIDTH-1 DOWNTO 0);
-         y          :OUT STD_LOGIC_VECTOR(2*WIDTH-1 DOWNTO 0);
+         N: INTEGER :=100);
+	port(reset      :IN STD_LOGIC;
+         --start      :IN STD_LOGIC;
+         clk        :IN STD_LOGIC;
+         clk250K    :IN STD_LOGIC;
+         clk6M      :IN STD_LOGIC;
+         x          :IN signed(WIDTH-1 DOWNTO 0);
+         y          :OUT signed(WIDTH-1 DOWNTO 0);
          finished   :OUT STD_LOGIC);
 end component;
 
 signal start_r : STD_LOGIC;
-signal filt_out_r : STD_LOGIC_VECTOR(2*WIDTH-1 DOWNTO 0);
+signal filt_out_r : signed(WIDTH-1 DOWNTO 0);
 signal finished_r : STD_LOGIC;
 
 signal start_i : STD_LOGIC;
-signal filt_out_i : STD_LOGIC_VECTOR(2*WIDTH-1 DOWNTO 0);
+signal filt_out_i : signed(WIDTH-1 DOWNTO 0);
 signal finished_i : STD_LOGIC;
 
 begin
 
-filt_r: filter
+filt_r: ChannelFilter
 GENERIC MAP(WIDTH => WIDTH,
-            N => 4)
+            N => 100)
 PORT MAP(reset => reset,
-         start => start_r,
+         --start => start_i,
          clk => clk_100MHz,
-         x => STD_LOGIC_VECTOR(in_r),
+         clk250K => clk_250KHz,
+         clk6M => clk_6MHz,
+         x => in_r,
          y => filt_out_r,
          finished => finished_r);
          
-filt_i: filter
+filt_i: ChannelFilter
 GENERIC MAP(WIDTH => WIDTH,
-            N => 4)
+            N => 100)
 PORT MAP(reset => reset,
-         start => start_i,
+         --start => start_i,
          clk => clk_100MHz,
-         x => STD_LOGIC_VECTOR(in_i),
+         clk250K => clk_250KHz,
+         clk6M => clk_6MHz,
+         x => in_i,
          y => filt_out_i,
          finished => finished_i);
 
@@ -65,13 +71,13 @@ begin
         out_r <= (others => '0');
         out_i <= (others => '0');
     elsif rising_edge(clk_100MHz) then
-      start_r <= clk_250kHz;
-      start_i <= clk_250kHz;
+      --start_r <= clk_250kHz;
+      --start_i <= clk_250kHz;
       if (finished_r = '1') then
-        out_r <= signed(filt_out_r(2*WIDTH-2 downto WIDTH-1));
+        out_r <= filt_out_r;
       end if;
       if (finished_i = '1') then
-        out_i <= signed(filt_out_i(2*WIDTH-2 downto WIDTH-1));
+        out_i <= filt_out_i;
       end if;
     end if;
 end process;
