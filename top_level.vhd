@@ -205,7 +205,7 @@ begin
          
 --ADC
 ADC_cmp: ADC    
-GENERIC MAP(WIDTH => WIDTH)
+--GENERIC MAP(WIDTH => WIDTH)
 PORT MAP( 
 		clk_6MHz => clk_6MHz,
 		reset => reset,
