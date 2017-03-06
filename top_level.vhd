@@ -157,6 +157,7 @@ end component;
 --Clocks
 signal clk_6MHz : std_logic :='0';
 signal clk_250KHz : std_logic :='0';
+signal clk_31KHz : std_logic :='0';
 
 ---VVVV SIGNAL PATH VVVV----
 --ADC component
