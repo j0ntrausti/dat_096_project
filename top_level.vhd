@@ -41,7 +41,7 @@ Port ( clk_6MHz : in STD_LOGIC;
        );
 end component;
 
---First mixer step
+--First mixer down step
 component Mixer_down_1    
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_6MHz : in STD_LOGIC;
@@ -58,7 +58,7 @@ Port ( clk_6MHz : in STD_LOGIC;
        );
 end component;
 
---Second mixer step
+--Second mixer down step
 component Mixer_down_2   
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_250KHz : in STD_LOGIC;
@@ -80,6 +80,48 @@ Port ( clk_250KHz : in STD_LOGIC;
        out_i_6 : out signed(WIDTH-1 downto 0);
        out_r_7 : out signed(WIDTH-1 downto 0);
        out_i_7 : out signed(WIDTH-1 downto 0)
+       );
+end component;
+
+--First mixer up step
+component Mixer_up_1   
+GENERIC (WIDTH:INTEGER:=WIDTH);
+Port ( clk_250KHz : in STD_LOGIC;
+       in_r : in signed(WIDTH-1 downto 0);
+       in_i : in signed(WIDTH-1 downto 0);
+       out_r_0 : out signed(WIDTH-1 downto 0);
+       out_i_0 : out signed(WIDTH-1 downto 0);
+       out_r_1 : out signed(WIDTH-1 downto 0);
+       out_i_1 : out signed(WIDTH-1 downto 0);
+       out_r_2 : out signed(WIDTH-1 downto 0);
+       out_i_2 : out signed(WIDTH-1 downto 0);
+       out_r_3 : out signed(WIDTH-1 downto 0);
+       out_i_3 : out signed(WIDTH-1 downto 0);
+       out_r_4 : out signed(WIDTH-1 downto 0);
+       out_i_4 : out signed(WIDTH-1 downto 0);
+       out_r_5 : out signed(WIDTH-1 downto 0);
+       out_i_5 : out signed(WIDTH-1 downto 0);
+       out_r_6 : out signed(WIDTH-1 downto 0);
+       out_i_6 : out signed(WIDTH-1 downto 0);
+       out_r_7 : out signed(WIDTH-1 downto 0);
+       out_i_7 : out signed(WIDTH-1 downto 0)
+       );
+end component;
+
+--Second mixer up step
+component Mixer_up_2    
+GENERIC (WIDTH:INTEGER:=WIDTH);
+Port ( clk_6MHz : in STD_LOGIC;
+       in_r : in signed(WIDTH-1 downto 0);
+       in_i : in signed(WIDTH-1 downto 0);
+       out_r_0 : out signed(WIDTH-1 downto 0);
+       out_i_0 : out signed(WIDTH-1 downto 0);
+       out_r_1 : out signed(WIDTH-1 downto 0);
+       out_i_1 : out signed(WIDTH-1 downto 0);
+       out_r_2 : out signed(WIDTH-1 downto 0);
+       out_i_2 : out signed(WIDTH-1 downto 0);
+       out_r_3 : out signed(WIDTH-1 downto 0);
+       out_i_3 : out signed(WIDTH-1 downto 0)
        );
 end component;
 
@@ -116,205 +158,28 @@ end component;
 signal clk_6MHz : std_logic :='0';
 signal clk_250KHz : std_logic :='0';
 
---Routing signals
+---VVVV SIGNAL PATH VVVV----
+--ADC component
 signal adc_out : signed(WIDTH-1 downto 0);
-
---from Mixer_down_1 to DEC_1 i.e undecimated blocks
-signal block_0_undec_r : signed(WIDTH-1 downto 0);
-signal block_0_undec_i : signed(WIDTH-1 downto 0);
-signal block_1_undec_r : signed(WIDTH-1 downto 0);
-signal block_1_undec_i : signed(WIDTH-1 downto 0);
-signal block_2_undec_r : signed(WIDTH-1 downto 0);
-signal block_2_undec_i : signed(WIDTH-1 downto 0);
-signal block_3_undec_r : signed(WIDTH-1 downto 0);
-signal block_3_undec_i : signed(WIDTH-1 downto 0);
-
---array version of previous signals?(see Read_package.vhdl):
---blocks_undec(0)=block_0_undec_r
---blocks_undec(1)=block_0_undec_i
---blocks_undec(2)=block_1_undec_r
---blocks_undec(3)=block_1_undec_i
---etc...
-signal blocks_undec: Blocks;
-
---from DEC_1 to Mixer_down_2 i.e decimated blocks
-signal block_0_dec_r : signed(WIDTH-1 downto 0);
-signal block_0_dec_i : signed(WIDTH-1 downto 0);
-signal block_1_dec_r : signed(WIDTH-1 downto 0);
-signal block_1_dec_i : signed(WIDTH-1 downto 0);
-signal block_2_dec_r : signed(WIDTH-1 downto 0);
-signal block_2_dec_i : signed(WIDTH-1 downto 0);
-signal block_3_dec_r : signed(WIDTH-1 downto 0);
-signal block_3_dec_i : signed(WIDTH-1 downto 0);
-
-
---array version again:
-signal blocks_dec: Blocks;
-
---from Mixer_down_2 to DEC_2 - i.e undecimated signals
-	--first block
-	signal channel_0_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_0_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_0_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_0_undec_i : signed(WIDTH-1 downto 0);
-	
-	--second block
-	signal channel_0_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_1_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_1_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_1_undec_i : signed(WIDTH-1 downto 0);
-
-	
-	--third block
-	signal channel_0_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_2_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_2_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_2_undec_i : signed(WIDTH-1 downto 0);
-	
-	
-	--fourth block
-	signal channel_0_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_3_undec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_3_undec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_3_undec_i : signed(WIDTH-1 downto 0);
-	
---Three-dimentional array version:
---signals_undec(0)(0) = channel_0_block_0_undec_r
---signals_undec(0)(1) = channel_0_block_0_undec_i
---signals_undec(0)(2) = channel_0_block_1_undec_r
---signals_undec(0)(3) = channel_0_block_1_undec_i
---signals_undec(1)(0) = channel_1_block_0_undec_r
---signals_undec(1)(1) = channel_1_block_0_undec_i
---signals_undec(1)(2) = channel_1_block_1_undec_r
---signals_undec(1)(3) = channel_1_block_1_undec_i
---etc...
-signal signals_undec: Signals;
-	
---from DEC_2 to Redirect - i.e decimated signals
-		--first block
-	signal channel_0_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_0_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_0_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_0_dec_i : signed(WIDTH-1 downto 0);
-	
-	--second block
-	signal channel_0_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_1_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_1_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_1_dec_i : signed(WIDTH-1 downto 0);
-
-	
-	--third block
-	signal channel_0_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_2_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_2_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_2_dec_i : signed(WIDTH-1 downto 0);
-	
-	
-	--fourth block
-	signal channel_0_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_0_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_1_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_1_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_2_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_2_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_3_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_3_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_4_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_4_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_5_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_5_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_6_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_6_block_3_dec_i : signed(WIDTH-1 downto 0);
-	signal channel_7_block_3_dec_r : signed(WIDTH-1 downto 0);
-	signal channel_7_block_3_dec_i : signed(WIDTH-1 downto 0);
-	
---array version again:
-signal signals_dec: Signals;
+--mixer_down_1
+signal blocks_undec: Blocks; 		--2D array
+--DEC_1
+signal blocks_dec: Blocks; 			--2D array
+--Mixer_down_2
+signal signals_undec: Signals; 		--3D array
+--DEC_2
+signal signals_dec: Signals; 		--3D array
+--Redirect
+signal signals_redirected: Signals; --3D array
+--Mixer_up_1
+signal blocks_unpol: Blocks; 		--2D array
+--IPOL_1
+signal blocks_pol: Blocks; 			--2D array
+--Mixer_up_2
+signal dac_unpol : signed(WIDTH-1 downto 0);
+--IPOL_2
+signal dac_pol : signed(WIDTH-1 downto 0);
+--DAC component
 
 begin
 
@@ -346,10 +211,6 @@ PORT MAP(
     );
 
 --Mixer_down_1
---blocks_undec(0)=block_0_undec_r
---blocks_undec(1)=block_0_undec_i
---blocks_undec(2)=block_1_undec_r
---blocks_undec(3)=block_1_undec_i
 	Mixer_dnw_1: Mixer_down_1    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
@@ -380,16 +241,6 @@ PORT MAP(
 		out_i => blocks_dec(1)
 		);
 
---Mixer_down_2_block_0
---signals_undec(0)(0) = channel_0_block_0_undec_r
---signals_undec(0)(1) = channel_0_block_0_undec_i
---signals_undec(0)(2) = channel_0_block_1_undec_r
---signals_undec(0)(3) = channel_0_block_1_undec_i
---signals_undec(1)(0) = channel_1_block_0_undec_r
---signals_undec(1)(1) = channel_1_block_0_undec_i
---signals_undec(1)(2) = channel_1_block_1_undec_r
---signals_undec(1)(3) = channel_1_block_1_undec_i
---etc...
 	Mixer_dnw_2_block_0: Mixer_down_2    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
@@ -455,6 +306,31 @@ PORT MAP(
         out_r => signals_dec(0)(14),
         out_i => signals_dec(0)(15)
         );
+ 
+ --first mixer up block_0       
+	Mixer_up_2_block_0: Mixer_up_1    
+	GENERIC MAP(WIDTH => WIDTH)
+	PORT MAP( 
+		clk_250KHz => clk_250KHz,
+		in_r_0 => signals_dec(0)(0),
+		in_i_0 => signals_dec(0)(1),
+		in_r_1 => signals_dec(0)(2),
+		in_i_1 => signals_dec(0)(3),
+		in_r_2 => signals_dec(0)(4),
+		in_i_2 => signals_dec(0)(5),
+		in_r_3 => signals_dec(0)(6),
+		in_i_3 => signals_dec(0)(7),
+		in_r_4 => signals_dec(0)(8),
+		in_i_4 => signals_dec(0)(9),
+		in_r_5 => signals_dec(0)(10),
+		in_i_5 => signals_dec(0)(11),
+		in_r_6 => signals_dec(0)(12),
+		in_i_6 => signals_dec(0)(13),
+		in_r_7 => signals_dec(0)(14),
+		in_i_7 => signals_dec(0)(15),
+		out_r => blocks_dec(0),
+		out_i => blocks_dec(1)
+		);
 		
 DUMMY_0 <= STD_LOGIC_VECTOR(signals_dec(0)(0));
 DUMMY_1 <= STD_LOGIC_VECTOR(signals_dec(0)(2));
