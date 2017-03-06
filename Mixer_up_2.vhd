@@ -16,7 +16,7 @@ Port ( clk_6MHz : in STD_LOGIC;
        out_r : out signed(WIDTH-1 downto 0);
        out_i : out signed(WIDTH-1 downto 0)
        );
-end Mixer_down_2;
+end Mixer_up_2;
 
 architecture Behavioral of Mixer_up_2 is
 --Sin/Cos generation first step

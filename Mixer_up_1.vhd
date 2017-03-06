@@ -2,9 +2,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 
-entity Mixer_down_2 is
+entity Mixer_up_1 is
 GENERIC (WIDTH:INTEGER:=10);
-Port ( clk_250KHz : in STD_LOGIC;
+Port ( clk_6MHz : in STD_LOGIC;
        in_r_0 : in signed(WIDTH-1 downto 0);
        in_i_0 : in signed(WIDTH-1 downto 0);
        in_r_1 : in signed(WIDTH-1 downto 0);
@@ -24,19 +24,19 @@ Port ( clk_250KHz : in STD_LOGIC;
        out_r : out signed(WIDTH-1 downto 0);
        out_i : out signed(WIDTH-1 downto 0)
        );
-end Mixer_down_2;
+end Mixer_up_1;
 
-architecture Behavioral of Mixer_down_2 is
+architecture Behavioral of Mixer_up_1 is
 
 --Sin/Cos generation second step
-component sin_cos_250KHz_up    
+component sin_cos_6MHz_up_1   
 GENERIC (WIDTH:INTEGER:=10);
-PORT ( clk_250KHz : in STD_LOGIC;
+PORT ( clk_6MHz : in STD_LOGIC;
        Cos_0 : out signed(WIDTH-1 downto 0); -- 375KHz
        Cos_1 : out signed(WIDTH-1 downto 0); -- 343.75KHz
        Cos_2 : out signed(WIDTH-1 downto 0); -- 312.5KHz
        Cos_3 : out signed(WIDTH-1 downto 0); -- 281.25KHz
-       Coc_4 : out signed(WIDTH-1 downto 0); -- 250KHz
+       Cos_4 : out signed(WIDTH-1 downto 0); -- 250KHz
        Cos_5 : out signed(WIDTH-1 downto 0); -- 218.75KHz
        Cos_6 : out signed(WIDTH-1 downto 0); -- 187.5KHz
        Cos_7 : out signed(WIDTH-1 downto 0); -- 156.25KHz
@@ -101,10 +101,10 @@ signal out_i_7 : signed(WIDTH-1 downto 0);
 
 begin
 
-sin_cos_1: sin_cos_250KHz_up
+sin_cos_1: sin_cos_6MHz_up_1
 GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-       clk_250KHz => clk_250KHz,
+       clk_6MHz => clk_6MHz,
        Cos_0 => Cos_0,
        Cos_1 => Cos_1,
        Cos_2 => Cos_2,
@@ -126,7 +126,7 @@ PORT MAP (
 mult_0: Multiplier
 GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_0,
     a_i => in_i_0,
     b_r => Cos_0,
@@ -138,7 +138,7 @@ PORT MAP (
 mult_1: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_1,
     a_i => in_i_1,
     b_r => Cos_1,
@@ -150,7 +150,7 @@ PORT MAP (
 mult_2: Multiplier
 GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_2,
     a_i => in_i_2,
     b_r => Cos_2,
@@ -162,7 +162,7 @@ PORT MAP (
 mult_3: Multiplier
 GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_3,
     a_i => in_i_3,
     b_r => Cos_3,
@@ -174,7 +174,7 @@ PORT MAP (
 mult_4: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_4,
     a_i => in_i_4,
     b_r => Cos_4,
@@ -186,7 +186,7 @@ PORT MAP (
 mult_5: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_5,
     a_i => in_i_5,
     b_r => Cos_5,
@@ -198,7 +198,7 @@ PORT MAP (
 mult_6: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_6,
     a_i => in_i_6,
     b_r => Cos_6,
@@ -210,7 +210,7 @@ PORT MAP (
 mult_7: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
-    clk => clk_250KHz,
+    clk => clk_6MHz,
     a_r => in_r_7,
     a_i => in_i_7,
     b_r => Cos_7,
@@ -218,5 +218,8 @@ PORT MAP (
     ut_r => out_r_7,
     ut_i => out_i_7
   );
+  
+out_r <= out_r_0 + out_r_1 + out_r_2 + out_r_3 + out_r_4 + out_r_5 + out_r_6 + out_r_7;
+out_i <= out_i_0 + out_i_1 + out_i_2 + out_i_3 + out_i_4 + out_i_5 + out_i_6 + out_i_7;
   
 end Behavioral;
