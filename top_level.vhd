@@ -10,14 +10,14 @@ Port ( clk_100MHz 	: in STD_LOGIC;
 	   reset 		: in STD_LOGIC;
        Switches 	: in STD_LOGIC_VECTOR(14 downto 0);
        LED			: out STD_LOGIC_VECTOR(14 downto 0);
-       DUMMY_0      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_1      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_2      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_3      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_4      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_5      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_6      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
-       DUMMY_7      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0));
+       DUMMY_0      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0));
+--       DUMMY_1      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_2      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_3      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_4      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_5      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_6      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
+--       DUMMY_7      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0));
 end top_level;
 
 architecture Behavioral of top_level is
@@ -86,25 +86,25 @@ end component;
 --First mixer up step
 component Mixer_up_1   
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_250KHz : in STD_LOGIC;
-       in_r : in signed(WIDTH-1 downto 0);
-       in_i : in signed(WIDTH-1 downto 0);
-       out_r_0 : out signed(WIDTH-1 downto 0);
-       out_i_0 : out signed(WIDTH-1 downto 0);
-       out_r_1 : out signed(WIDTH-1 downto 0);
-       out_i_1 : out signed(WIDTH-1 downto 0);
-       out_r_2 : out signed(WIDTH-1 downto 0);
-       out_i_2 : out signed(WIDTH-1 downto 0);
-       out_r_3 : out signed(WIDTH-1 downto 0);
-       out_i_3 : out signed(WIDTH-1 downto 0);
-       out_r_4 : out signed(WIDTH-1 downto 0);
-       out_i_4 : out signed(WIDTH-1 downto 0);
-       out_r_5 : out signed(WIDTH-1 downto 0);
-       out_i_5 : out signed(WIDTH-1 downto 0);
-       out_r_6 : out signed(WIDTH-1 downto 0);
-       out_i_6 : out signed(WIDTH-1 downto 0);
-       out_r_7 : out signed(WIDTH-1 downto 0);
-       out_i_7 : out signed(WIDTH-1 downto 0)
+Port ( clk_6MHz : in STD_LOGIC;
+        in_r_0 : in signed(WIDTH-1 downto 0);
+        in_i_0 : in signed(WIDTH-1 downto 0);
+        in_r_1 : in signed(WIDTH-1 downto 0);
+        in_i_1 : in signed(WIDTH-1 downto 0);
+        in_r_2 : in signed(WIDTH-1 downto 0);
+        in_i_2 : in signed(WIDTH-1 downto 0);
+        in_r_3 : in signed(WIDTH-1 downto 0);
+        in_i_3 : in signed(WIDTH-1 downto 0);
+        in_r_4 : in signed(WIDTH-1 downto 0);
+        in_i_4 : in signed(WIDTH-1 downto 0);
+        in_r_5 : in signed(WIDTH-1 downto 0);
+        in_i_5 : in signed(WIDTH-1 downto 0);
+        in_r_6 : in signed(WIDTH-1 downto 0);
+        in_i_6 : in signed(WIDTH-1 downto 0);
+        in_r_7 : in signed(WIDTH-1 downto 0);
+        in_i_7 : in signed(WIDTH-1 downto 0);
+        out_r : out signed(WIDTH-1 downto 0);
+        out_i : out signed(WIDTH-1 downto 0)
        );
 end component;
 
@@ -112,16 +112,16 @@ end component;
 component Mixer_up_2    
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_6MHz : in STD_LOGIC;
-       in_r : in signed(WIDTH-1 downto 0);
-       in_i : in signed(WIDTH-1 downto 0);
-       out_r_0 : out signed(WIDTH-1 downto 0);
-       out_i_0 : out signed(WIDTH-1 downto 0);
-       out_r_1 : out signed(WIDTH-1 downto 0);
-       out_i_1 : out signed(WIDTH-1 downto 0);
-       out_r_2 : out signed(WIDTH-1 downto 0);
-       out_i_2 : out signed(WIDTH-1 downto 0);
-       out_r_3 : out signed(WIDTH-1 downto 0);
-       out_i_3 : out signed(WIDTH-1 downto 0)
+        in_r_0 : in signed(WIDTH-1 downto 0);
+        in_i_0 : in signed(WIDTH-1 downto 0);
+        in_r_1 : in signed(WIDTH-1 downto 0);
+        in_i_1 : in signed(WIDTH-1 downto 0);
+        in_r_2 : in signed(WIDTH-1 downto 0);
+        in_i_2 : in signed(WIDTH-1 downto 0);
+        in_r_3 : in signed(WIDTH-1 downto 0);
+        in_i_3 : in signed(WIDTH-1 downto 0);
+        out_r : out signed(WIDTH-1 downto 0);
+        out_i : out signed(WIDTH-1 downto 0)
        );
 end component;
 
@@ -332,7 +332,7 @@ signals_redirected <= signals_dec;
 Mixer_up_1_block_0: Mixer_up_1    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-		clk_250KHz => clk_250KHz,
+		clk_6MHz => clk_6MHz,
 		in_r_0 => signals_redirected(0)(0),
 		in_i_0 => signals_redirected(0)(1),
 		in_r_1 => signals_redirected(0)(2),
@@ -368,7 +368,7 @@ blocks_pol(7) <= blocks_unpol(7);
 Mixer_up_2_block_0: Mixer_up_2    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-		clk_250KHz => clk_250KHz,
+		clk_6MHz => clk_6MHz,
 		in_r_0 => blocks_pol(0),
 		in_i_0 => blocks_pol(1),
 		in_r_1 => blocks_pol(2),
@@ -385,13 +385,13 @@ Mixer_up_2_block_0: Mixer_up_2
  dac_pol_r <= dac_unpol_r;
  dac_pol_i <= dac_unpol_i;
  	
-DUMMY_0 <= STD_LOGIC_VECTOR(signals_dec(0)(0));
-DUMMY_1 <= STD_LOGIC_VECTOR(signals_dec(0)(2));
-DUMMY_2 <= STD_LOGIC_VECTOR(signals_dec(0)(4));
-DUMMY_3 <= STD_LOGIC_VECTOR(signals_dec(0)(6));
-DUMMY_4 <= STD_LOGIC_VECTOR(signals_dec(0)(8));
-DUMMY_5 <= STD_LOGIC_VECTOR(signals_dec(0)(10));
-DUMMY_6 <= STD_LOGIC_VECTOR(signals_dec(0)(12));
-DUMMY_7 <= STD_LOGIC_VECTOR(signals_dec(0)(14));
+DUMMY_0 <= STD_LOGIC_VECTOR(dac_pol_r);
+--DUMMY_1 <= STD_LOGIC_VECTOR(signals_dec(0)(2));
+--DUMMY_2 <= STD_LOGIC_VECTOR(signals_dec(0)(4));
+--DUMMY_3 <= STD_LOGIC_VECTOR(signals_dec(0)(6));
+--DUMMY_4 <= STD_LOGIC_VECTOR(signals_dec(0)(8));
+--DUMMY_5 <= STD_LOGIC_VECTOR(signals_dec(0)(10));
+--DUMMY_6 <= STD_LOGIC_VECTOR(signals_dec(0)(12));
+--DUMMY_7 <= STD_LOGIC_VECTOR(signals_dec(0)(14));
 
 end Behavioral;
