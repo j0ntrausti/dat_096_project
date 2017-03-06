@@ -57,9 +57,9 @@ component dds_2_2
   PORT (
      aclk : IN STD_LOGIC;
      m_axis_data_tvalid : OUT STD_LOGIC;
-     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-     m_axis_phase_tvalid : OUT STD_LOGIC; 
-     m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+     m_axis_data_tdata : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+     --m_axis_phase_tvalid : OUT STD_LOGIC; 
+     --m_axis_phase_tdata : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
    );
 end component;
 
