@@ -1,16 +1,16 @@
 function [out] = anti_negative(in)
 
-
+%in = binarybucket1;
 
 lengd = length(in);
 k = in;
 
-for k = 1:lengd
+for a = 1:lengd
    
-    if (in(k) == '1')
-            middle = 0; array(k) = middle;
+    if (in(a) == '1')
+            middle = 0; array(a) = middle;
     else 
-            middle = 1; array(k) = middle;
+            middle = 1; array(a) = middle;
     end
     
 end
