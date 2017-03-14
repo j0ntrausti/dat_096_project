@@ -10,7 +10,17 @@ Port ( clk_100MHz 	: in STD_LOGIC;
 	   reset 		: in STD_LOGIC;
        Switches 	: in STD_LOGIC_VECTOR(14 downto 0);
        LED			: out STD_LOGIC_VECTOR(14 downto 0);
+      	---------ADC-----------
+	CS0			:out std_logic;
+	CS1			:out std_logic;
+	Read_low 		:out std_logic ; 
+	Wr_low			: out std_logic ; 
+	config_output_D11_D0	: inout std_logic_vector (11 downto 0);
+	Data_av			: in std_logic;
+	---------ADC-----------
        DUMMY_0      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0));
+	
+
 --       DUMMY_1      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
 --       DUMMY_2      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
 --       DUMMY_3      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
@@ -35,10 +45,16 @@ end component;
 --ADC
 component ADC    
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_6MHz : in STD_LOGIC;
-       reset 	: in STD_LOGIC;
-       adc_out 	: out STD_LOGIC_VECTOR(WIDTH-1 downto 0)
-       );
+Port (	clk_6MHz	: in std_logic;
+      	reset		: in std_logic;
+      	data_av		: in std_logic;
+	CS1_activehigh	: out std_logic;
+      	CS0_activelow	: out std_logic;
+	dig_out		: out std_logic_vector (WIDTH-1 downto 0);
+	rd_activelow	: out std_logic ; 
+	wr_activelow	: out std_logic ; 
+	D11_D0 		: inout std_logic_vector (WIDTH-1 downto 0) 
+	);
 end component;
 
 --First mixer down step
@@ -210,7 +226,13 @@ ADC_cmp: ADC
 PORT MAP( 
 		clk_6MHz => clk_6MHz,
 		reset => reset,
-		adc_out => adc_out 
+		CS0_activelow =>CS0,
+		CS1_activehigh =>CS1,
+		data_av=>Data_av,
+		rd_activelow=>Read_low,
+		wr_activelow=>Wr_low,
+		D11_D0 => config_output_D11_D0,
+		dig_out => adc_out 
     );
 
 --Mixer_down_1
