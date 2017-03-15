@@ -34,17 +34,18 @@ fp2 = 12.5*k; %  rate(Hz) possible 118.75
 b = firpm(n+20,fo,mo,w);
 b2 = firpm(n2+7,fo2,mo2,w2);
 
+% the nr. of oefficients
 N_block = n+20;
 N_channel = n2+7;
+
+% Few things that make the txt files clearer,
 comma = ';';
 brackets = '"';
 sth = 't(';
 brah = ')<=';
 broh = '.';
-fvtool(b);
-fvtool(b2);
 
-fileID = fopen('binary4block.txt','w');
+fileID = fopen('binary4block.txt','w'); % use this for coeff. 
 fileID2 = fopen('binary4block2.txt','w');
 
 fileID3 = fopen('binary4block3.txt','w');
@@ -72,7 +73,7 @@ fclose(fileID3);
 error = quantizer(bits,1);
 fvtool(b,1,error,1);
 
-fileID11 = fopen('binary4channel.txt','w');
+fileID11 = fopen('binary4channel.txt','w'); % use this for coeff
 fileID22 = fopen('binary4channel2.txt','w');
 fileID33 = fopen('binary4channel3.txt','w');
 for j = 1:length(b2) 
@@ -98,5 +99,4 @@ fclose(fileID22);
 fclose(fileID33);
 error2 = quantizer(bits,2);
 fvtool(b2,1,error2,1);
-
-[pathstr,name,ext] = fileparts('binary4channel.txt')
+%[pathstr,name,ext] = fileparts('binary4channel.txt')

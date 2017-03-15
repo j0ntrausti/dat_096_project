@@ -3,9 +3,10 @@ function [store2] = quantizer(bits, block)
 if block == 1;
     A = textread('binary4block2.txt', '%s');
     A2 = textread('binary4block3.txt', '%s');
-else 
+elseif block == 2;
      A = textread('binary4channel2.txt', '%s');
     A2 = textread('binary4channel3.txt', '%s');
+        
 end
 
     
