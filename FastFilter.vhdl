@@ -64,14 +64,22 @@ begin
 		 -- Pretty much same as start, just double sec. since start is input signal
 		i<=0;	-- reset the counter 
 		y_s <= (others => '0');
+		y <= (others => '0');
 		finished <= '0';
 		finished_sig <= '1';
+		
 		for i in 0 to (2*(N-1)-2) loop
 			if (i<(2*(N-1)-1)) then
-				xL(i)<=(others=> '0'); 
+				xL(i)<=(others=> '0');  
 			end if;
 		end loop;
 		
+		for i in 0 to (N-1) loop
+               MiddleAdder(i)<=(others=> '0'); 
+               queue2multi(i)<=(others=> '0'); 
+        end loop;
+		
+
 		-- here the coeff. comes in for ex. 
 		t(0)<="000000000000";
 		t(1)<="000000000000";
@@ -274,6 +282,7 @@ begin
 				finished <= '1';
 				finished_sig <= '1';
 				y <= y_s(2*width-2 downto width-1);
+				y_s <= (others => '0');
 			else
 				y_s <= ((queue2multi(i)*t(i))+y_s);
 				i <= i+1;
@@ -291,7 +300,7 @@ begin
 --------------------------------------------------------------------  
 		if (clk6M='1' AND swapping='0') then   	
 			swapping<='1';
-			y_s <= (others => '0');
+			--y_s <= (others => '0');
 			-- the first adding
 			MiddleAdder(0)<=(xL((2*(N-1)-2)) + x); 
 			-- the last adding
