@@ -72,6 +72,11 @@ begin
 			end if;
 		end loop;
 		
+	    for i in 0 to (N-1) loop
+               MiddleAdder(i)<=(others=> '0'); 
+               queue2multi(i)<=(others=> '0'); 
+        end loop;
+		
 		-- here the coeff. comes in for ex. 
 	t(0)<="000000000001";
 t(1)<="000000000001";
@@ -177,6 +182,7 @@ t(92)<="000000000001";
 				finished <= '1';
 				finished_sig <= '1';
 				y <= y_s(2*width-2 downto width-1);
+				y_s <= (others => '0');
 			else
 				y_s <= ((queue2multi(i)*t(i))+y_s);
 				i <= i+1;
@@ -194,7 +200,7 @@ t(92)<="000000000001";
 --------------------------------------------------------------------  
 		if (clk6M='1' AND swapping='0') then   	
 			swapping<='1';
-			y_s <= (others => '0');
+			
 			-- the first adding
 			MiddleAdder(0)<=(xL((2*(N-1)-2)) + x); 
 			-- the last adding
