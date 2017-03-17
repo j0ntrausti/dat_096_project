@@ -7,8 +7,8 @@ use work.Read_package.all;
 entity top_level is
 GENERIC (WIDTH:INTEGER:=12);
 Port ( clk_100MHz 	: in STD_LOGIC;
-	   reset 		: in STD_LOGIC;
-       Switches 	: in STD_LOGIC_VECTOR(14 downto 0);
+	   reset 		: in STD_LOGIC:= '0';
+       Switches 	: in STD_LOGIC_VECTOR(14 downto 0):=(others => '0');
        LED			: out STD_LOGIC_VECTOR(14 downto 0);
        DUMMY_0      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0));
 --       DUMMY_1      : out STD_LOGIC_VECTOR(WIDTH-1 downto 0);
@@ -143,8 +143,8 @@ end component;
 component DEC_2
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_100MHz : in STD_LOGIC;
-       clk_6MHz : in STD_LOGIC;
        clk_250KHz : in STD_LOGIC;
+       clk_31KHz : in STD_LOGIC;
        reset : in STD_LOGIC;
        in_r : in signed(WIDTH-1 downto 0);
        in_i : in signed(WIDTH-1 downto 0);
@@ -187,22 +187,30 @@ signal dac_pol_i : signed(WIDTH-1 downto 0);
 begin
 
 --Clock Enables
-	--6MHz
-	Clk_en_6MHz: clk_enable_generic 
-	GENERIC MAP(N => 17)
-	PORT MAP (
-         clk => clk_100MHz,
-         reset => reset,
-         --end_clk => --what?
-         clk_enable => clk_6MHz);
-	--250KHz
-	Clk_en_250KHz: clk_enable_generic 
-	GENERIC MAP(N => 413)
-	PORT MAP (
-         clk => clk_100MHz,
-         reset => reset,
-         --end_clk => --what?
-         clk_enable => clk_250KHz);
+--6MHz
+Clk_en_6MHz: clk_enable_generic 
+GENERIC MAP(N => 17)
+PORT MAP (
+    clk => clk_100MHz,
+    reset => reset,
+    --end_clk => --what?
+    clk_enable => clk_6MHz);
+--250KHz
+Clk_en_250KHz: clk_enable_generic 
+GENERIC MAP(N => 413) -- synced with 6MHz, don't touch!
+PORT MAP (
+    clk => clk_100MHz,
+    reset => reset,
+    --end_clk => --what?
+    clk_enable => clk_250KHz);
+--31.5k     
+Clk_en_31KHz: clk_enable_generic 
+GENERIC MAP(N => 3311) -- synced with 6MHz and 250KHz, don't touch!
+PORT MAP (
+    clk => clk_100MHz,
+    reset => reset,
+    --end_clk => --what?
+    clk_enable => clk_31KHz);
          
 --ADC
 ADC_cmp: ADC    
@@ -273,13 +281,13 @@ PORT MAP(
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_100MHz => clk_100MHz,
-        clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
+        clk_31KHz => clk_31KHz,
 		reset => reset,
 		in_r => signals_undec(0)(10),
 		in_i => signals_undec(0)(11),
 		out_r => signals_dec(0)(10),
-		out_i => signals_undec(0)(11)
+		out_i => signals_dec(0)(11)
 		);
 
 --DEC_2_channel_6_block_1
@@ -287,8 +295,8 @@ PORT MAP(
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 	    clk_100MHz => clk_100MHz,
-        clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
+        clk_31KHz => clk_31KHz,
 		reset => reset,
 		in_r => signals_undec(0)(12),
         in_i => signals_undec(0)(13),
@@ -301,15 +309,15 @@ PORT MAP(
     GENERIC MAP(WIDTH => WIDTH)
     PORT MAP( 
         clk_100MHz => clk_100MHz,
-        clk_6MHz => clk_6MHz,
         clk_250KHz => clk_250KHz,
+        clk_31KHz => clk_31KHz,
         reset => reset,
         in_r => signals_undec(0)(14),
         in_i => signals_undec(0)(15),
         out_r => signals_dec(0)(14),
         out_i => signals_dec(0)(15)
         );
-        
+
 --Redirect (doesn't exist yet)
 signals_redirected <= signals_dec;
 --signals_redirected(0)(0) <= signals_dec(0)(0)
