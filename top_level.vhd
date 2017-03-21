@@ -276,47 +276,24 @@ PORT MAP(
 		out_i_7 => signals_undec(0)(15)
 		);
 
---DEC_2_channel_5_block_1
-	Decimation_2_channel_5_block_0: DEC_2
+--Channel Filters:
+DEC_2_Channel:
+for i in 0 to 7 generate
+--DEC_2_channel_0_block_1
+	Dec: DEC_2
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_100MHz => clk_100MHz,
         clk_250KHz => clk_250KHz,
         clk_31KHz => clk_31KHz,
 		reset => reset,
-		in_r => signals_undec(0)(10),
-		in_i => signals_undec(0)(11),
-		out_r => signals_dec(0)(10),
-		out_i => signals_dec(0)(11)
+		in_r => signals_undec(0)(2*i),
+		in_i => signals_undec(0)(2*i+1),
+		out_r => signals_dec(0)(2*i),
+		out_i => signals_dec(0)(2*i+1)
 		);
+end generate DEC_2_Channel;
 
---DEC_2_channel_6_block_1
-	Decimation_2_channel_6_block_0: DEC_2
-	GENERIC MAP(WIDTH => WIDTH)
-	PORT MAP( 
-	    clk_100MHz => clk_100MHz,
-        clk_250KHz => clk_250KHz,
-        clk_31KHz => clk_31KHz,
-		reset => reset,
-		in_r => signals_undec(0)(12),
-        in_i => signals_undec(0)(13),
-        out_r => signals_dec(0)(12),
-        out_i => signals_dec(0)(13)
-		);
-		
---DEC_2_channel_7_block_1
-    Decimation_2_channel_7_block_0: DEC_2
-    GENERIC MAP(WIDTH => WIDTH)
-    PORT MAP( 
-        clk_100MHz => clk_100MHz,
-        clk_250KHz => clk_250KHz,
-        clk_31KHz => clk_31KHz,
-        reset => reset,
-        in_r => signals_undec(0)(14),
-        in_i => signals_undec(0)(15),
-        out_r => signals_dec(0)(14),
-        out_i => signals_dec(0)(15)
-        );
 
 --Redirect (doesn't exist yet)
 signals_redirected <= signals_dec;
