@@ -189,7 +189,7 @@ begin
 --Clock Enables
 --6MHz
 Clk_en_6MHz: clk_enable_generic 
-GENERIC MAP(N => 17)
+GENERIC MAP(N => 16)
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
@@ -197,7 +197,7 @@ PORT MAP (
     clk_enable => clk_6MHz);
 --250KHz
 Clk_en_250KHz: clk_enable_generic 
-GENERIC MAP(N => 413) -- synced with 6MHz, don't touch!
+GENERIC MAP(N => 407) -- synced with 6MHz, don't touch!
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
@@ -205,7 +205,7 @@ PORT MAP (
     clk_enable => clk_250KHz);
 --31.5k     
 Clk_en_31KHz: clk_enable_generic 
-GENERIC MAP(N => 3311) -- synced with 6MHz and 250KHz, don't touch!
+GENERIC MAP(N => 3263) -- synced with 6MHz and 250KHz, don't touch!
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
