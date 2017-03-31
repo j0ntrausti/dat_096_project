@@ -20,9 +20,9 @@ s_b1 = exp(1i*2*pi*f_b1.*t);
 s_b2 = exp(1i*2*pi*f_b2.*t);
 s_b3 = exp(1i*2*pi*f_b3.*t);
 
-testvector = transpose(xlsread('sim_in_5'));
-sim_out_b0_r = transpose(xlsread('sim_out_5_bl0_r'));
-sim_out_b0_i = transpose(xlsread('sim_out_5_bl0_i'));
+testvector = transpose(xlsread('sim_in_6'));
+sim_out_b0_r = transpose(xlsread('sim_out_6_bl0_r'));
+sim_out_b0_i = transpose(xlsread('sim_out_6_bl0_i'));
 
 block_0 = s_b0.*testvector(1:l); 
 
