@@ -24,7 +24,7 @@ testvector = transpose(xlsread('sim_in_4'));
 sim_out_b0_r = transpose(xlsread('sim_out_4_bl0_r'));
 sim_out_b0_i = transpose(xlsread('sim_out_4_bl0_i'));
 
-block_0 = s_b0.*testvector(1:l);
+block_0 = s_b0.*testvector(1:l); 
 
 F = block_0;
 

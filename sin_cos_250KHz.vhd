@@ -199,29 +199,29 @@ DDS_7: dds_7_1 PORT MAP (
 
 --Extract channels THIS IS PROBABLY INCORRECT!!!!
 --edit: now it's maybe more correct
-Sin_0 <= not signed(outs_0(WIDTH-1 downto 0)) + 1; --invert to negative
-Cos_0 <= signed(outs_0(16+WIDTH-1 downto 16));
+Cos_0 <= not signed(outs_0(WIDTH-1 downto 0)) + 1; --invert to negative
+Sin_0 <= signed(outs_0(16+WIDTH-1 downto 16));
 
 --take signals from dds_7
-Sin_1 <= not signed(outs_7(WIDTH-1 downto 0)) + 1;--invert to negative
-Cos_1 <= signed(outs_7(16+WIDTH-1 downto 16));
+Cos_1 <= not signed(outs_7(WIDTH-1 downto 0)) + 1;--invert to negative
+Sin_1 <= signed(outs_7(16+WIDTH-1 downto 16));
 
 --take signals from dds_6
-Sin_2 <= not signed(outs_6(WIDTH-1 downto 0)) + 1;--invert to negative
-Cos_2 <= signed(outs_6(16+WIDTH-1 downto 16));
+Cos_2 <= not signed(outs_6(WIDTH-1 downto 0)) + 1;--invert to negative
+Sin_2 <= signed(outs_6(16+WIDTH-1 downto 16));
 
 --take signals from dds_5
-Sin_3 <= not signed(outs_5(WIDTH-1 downto 0)) + 1;--invert to negative
-Cos_3 <= signed(outs_5(16+WIDTH-1 downto 16));
+Cos_3 <= not signed(outs_5(WIDTH-1 downto 0)) + 1;--invert to negative
+Sin_3 <= signed(outs_5(16+WIDTH-1 downto 16));
 
-Sin_5 <= signed(outs_5(WIDTH-1 downto 0));
-Cos_5 <= signed(outs_5(16+WIDTH-1 downto 16));
+Cos_5 <= signed(outs_5(WIDTH-1 downto 0));
+Sin_5 <= signed(outs_5(16+WIDTH-1 downto 16));
 
-Sin_6 <= signed(outs_6(WIDTH-1 downto 0));
-Cos_6 <= signed(outs_6(16+WIDTH-1 downto 16));
+Cos_6 <= signed(outs_6(WIDTH-1 downto 0));
+Sin_6 <= signed(outs_6(16+WIDTH-1 downto 16));
 
-Sin_7 <= signed(outs_7(WIDTH-1 downto 0));
-Cos_7 <= signed(outs_7(16+WIDTH-1 downto 16));
+Cos_7 <= signed(outs_7(WIDTH-1 downto 0));
+Sin_7 <= signed(outs_7(16+WIDTH-1 downto 16));
 
 end Behavioral;
 

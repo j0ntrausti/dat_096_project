@@ -121,17 +121,17 @@ DDS_3: dds_3_0 PORT MAP (
 
 --Extract channels THIS IS PROBABLY INCORRECT!!!! 
 --edit: now it's maybe more correct
-Sin_0 <= signed(outs_0(WIDTH-1 downto 0));
-Cos_0 <= signed(outs_0(16+WIDTH-1 downto 16));
+Cos_0 <= signed(outs_0(WIDTH-1 downto 0));
+Sin_0 <= signed(outs_0(16+WIDTH-1 downto 16));
 
-Sin_1 <= signed(outs_1(WIDTH-1 downto 0));
-Cos_1 <= signed(outs_1(16+WIDTH-1 downto 16));
+Cos_1 <= signed(outs_1(WIDTH-1 downto 0));
+Sin_1 <= signed(outs_1(16+WIDTH-1 downto 16));
 
-Sin_2 <= signed(outs_2(WIDTH-1 downto 0));
-Cos_2 <= signed(outs_2(16+WIDTH-1 downto 16));
+Cos_2 <= signed(outs_2(WIDTH-1 downto 0));
+Sin_2 <= signed(outs_2(16+WIDTH-1 downto 16));
 
-Sin_3 <= signed(outs_3(WIDTH-1 downto 0));
-Cos_3 <= signed(outs_3(16+WIDTH-1 downto 16));
+Cos_3 <= signed(outs_3(WIDTH-1 downto 0));
+Sin_3 <= signed(outs_3(16+WIDTH-1 downto 16));
 
 end Behavioral;
 
