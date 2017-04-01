@@ -10,17 +10,18 @@ ENTITY BitMulti IS
 	     start:IN STD_LOGIC;
 	     A:IN signed(WIDTH-1 downto 0); -- X-input
 	     B:IN signed(WIDTH-1 downto 0); -- coff modified vector
-	     y:OUT signed(WIDTH-1 downto 0); -- multiplied output
+	     y:OUT signed(2*WIDTH-1 downto 0); -- multiplied output
              finished:OUT STD_LOGIC);
 END BitMulti;
 
 
 ARCHITECTURE arch_BitMulti OF
                       BitMulti IS
-SIGNAL OnGoing,done:STD_LOGIC;
-SIGNAL B_stored:signed(width-1 downto 0);
-SIGNAL Bucket:signed(2*width-1 downto 0);
-
+SIGNAL OnGoing,done:STD_LOGIC:='0';
+SIGNAL B_stored,A_stored:signed(2*width-1 downto 0);
+SIGNAL outs:signed(2*width-1 downto 0);
+type BucketA is array (1 to 12) of signed(2*width-1 downto 0);
+signal Bucket	:BucketA;
 
 -- B_stored,Bucket = 10 bits
 
@@ -29,39 +30,40 @@ SIGNAL Bucket:signed(2*width-1 downto 0);
 
 BEGIN
 
-process(clk, reset)
+process(clk, reset,OnGoing)
 begin
-	if reset = '0' then
-		Bucket <= (others => '0');
+	if start = '0' then
+		outs <= (others => '0');
 		B_stored <= (others => '0');
-
-	elsif rising_edge(clk) AND start='1' then
-	  B_Stored <= B;
-	  Bucket(2*width-1 downto width) <= A;
+		A_stored <= (others => '0');
+		for i in 1 to 12 loop
+               Bucket(i)<=(others=> '0'); 
+		end loop;
+	elsif rising_edge(clk) AND start='1' AND OnGoing<='0' then
+	   A_stored(2*width-1 downto width) <= A;
+	   A_stored(width-1 downto 0) <= (others => '0');
+	   B_stored(2*width-1 downto width) <= B;
+	   B_stored(width-1 downto 0) <= (others => '0');
+	   --y <= outs(2*width-1 downto width);
 	  finished <= '0';
 	  OnGoing <= '1';
-	elsif(OnGoing = '1' AND start ='1') then
+	end if;
+	if(OnGoing = '1' AND start ='1') then
 		for i in 1 to 12 loop
-			if B_stored(12-i) ='1' then
-				Bucket <= Bucket + (B_stored srl (i-1));
+			if B_stored(24-i) ='1' then
+				Bucket(i) <= (A_stored srl (i-1));
 				if(i = 12) then
-					done <= '1';
+					finished <= '1';
+					OnGoing <= '0';
+					y <= Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 				end if;	
 			elsif(i = 12) then 
-				done <= '1';
+				finished <= '1';
+				OnGoing <= '0';
+				y <= Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 			end if;
-
+		
 		end loop;
-		if(done = '1') then
-			y <= Bucket(2*width downto width);
-			done <= '0';
-			finished <= '1';
-			OnGoing <= '0';
-		end if;
 	end if;
 end process;
-
-
-
-
 END arch_BitMulti;
