@@ -284,7 +284,7 @@ begin
                 y <= y_s(2*width-2 downto width-1);
                 
             else
-                y_s <= ((queue2multi(i)*t(i))+y_s);
+                y_s <= (((queue2multi(i)*t(i)) sll 1)+y_s);
                 i <= i+1;
             end if;
         elsif(clk250k = '1') then     
