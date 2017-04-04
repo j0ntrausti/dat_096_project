@@ -18,7 +18,7 @@ entity FastFilter is
            clk250k:IN STD_LOGIC;
            clk6M:IN STD_LOGIC;
            x:IN signed(width-5 DOWNTO 0);
-           y:OUT signed(WIDTH-1 DOWNTO 0);
+           y:OUT signed(WIDTH-5 DOWNTO 0);
            finished:OUT STD_LOGIC);
 end FastFilter;
 
@@ -319,7 +319,7 @@ t(187)<="0000000000001001";
                 if (j<(2*(N-1)-2)) then
                     xL((2*(N-1)-2)-j)<=xL((2*(N-1)-3)-j);
                 elsif (j=(2*(N-1)-2)) then
-                    xL(0)<=x;
+                    xL(0)<=x_s;
                 end if;
             end loop;
             swapping<='0';    
