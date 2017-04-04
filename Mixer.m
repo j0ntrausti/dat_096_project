@@ -9,7 +9,7 @@ f_b2 = 1.625e6;
 f_b3 = 1.875e6;
 
 t_delta = 1.70012811127392000000e-07;
-stop = 0.0019369825;
+stop = 0.00099369825;
 Fs = 1/t_delta;
 
 t = 0:t_delta:stop;
@@ -69,7 +69,7 @@ f = (0:length(y)-1)*Fs/length(y);
     xlabel('f (Hz)')
     ylabel('|P1(f)|')
 
-%%
+
 
 
 %decimated signal plot
