@@ -18,7 +18,7 @@ end DEC_1;
 architecture Behavioral of DEC_1 is
 
 component FastFilter
-GENERIC (WIDTH:INTEGER:=12;
+GENERIC (WIDTH:INTEGER:=16;
          N: INTEGER :=127);
 	port(reset      :IN STD_LOGIC;
          --start      :IN STD_LOGIC;
@@ -41,7 +41,7 @@ signal finished_i : STD_LOGIC;
 begin
 
 filt_r: FastFilter
-GENERIC MAP(WIDTH => WIDTH,
+GENERIC MAP(WIDTH => 16,
             N => 188)
 PORT MAP(reset => reset,
          --start => start_r,
@@ -53,7 +53,7 @@ PORT MAP(reset => reset,
          finished => finished_r);
          
 filt_i: FastFilter
-GENERIC MAP(WIDTH => WIDTH,
+GENERIC MAP(WIDTH => 16,
             N => 188)
 PORT MAP(reset => reset,
          --start => start_r,
