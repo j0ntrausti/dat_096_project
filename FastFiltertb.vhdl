@@ -12,7 +12,7 @@ ARCHITECTURE arch_FastFiltertb OF
 
    COMPONENT FastFilter IS
       GENERIC(WIDTH:INTEGER:=12;
-              N:INTEGER:=188);
+              N:INTEGER:=4);
       PORT(reset:STD_LOGIC;
            clk:STD_LOGIC;
            clk250k:STD_LOGIC;
@@ -50,13 +50,13 @@ BEGIN
 
    x_tb_signal<="000000000000",
                 "010000000000" AFTER 4250 ns, -- 0,5=64
-		"111000000000" AFTER 4420 ns, -- -0,25=-32=224
-                "101000000000" AFTER 4590 ns, -- -0,25=-32=224
-                "001100000000" AFTER 4760 ns, -- 0,375=48
-		"010000000000" AFTER 4930 ns, -- 0,5=64
-                "101000000000" AFTER 5100 ns, -- -0,75=-96=160
-                "000000000000" AFTER 5270 ns;
-
+		"001000000000" AFTER 4420 ns, -- -0,25=-32=224
+                "000100000000" AFTER 4590 ns, -- -0,25=-32=224
+                "000010000000" AFTER 4760 ns, -- 0,375=48
+		"000001000000" AFTER 4930 ns; -- 0,5=64
+--                "101000000000" AFTER 5100 ns, -- -0,75=-96=160
+--                "000000000000" AFTER 5270 ns;
+--
 
    clk_proc:
    PROCESS
