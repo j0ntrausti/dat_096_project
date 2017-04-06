@@ -7,6 +7,7 @@ use work.Read_package.all;
 entity top_level is
 GENERIC (WIDTH:INTEGER:=12);
 Port ( clk_100MHz 	: in STD_LOGIC;
+       clk_uber     : in STD_LOGIC;
 	   reset 		: in STD_LOGIC:= '0';
        Switches 	: in STD_LOGIC_VECTOR(14 downto 0):=(others => '0');
        LED			: out STD_LOGIC_VECTOR(14 downto 0);
@@ -155,6 +156,7 @@ end component;
 
 --SIGNAL DECLARATIONS
 --Clocks
+--signal clk_uber : std_logic :='0';
 signal clk_6MHz : std_logic :='0';
 signal clk_250KHz : std_logic :='0';
 signal clk_31KHz : std_logic :='0';
@@ -242,7 +244,7 @@ PORT MAP(
 	Decimation_1_block_0: DEC_1
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-	    clk_100MHz => clk_100MHz,
+	    clk_100MHz => clk_uber,
 	    clk_6MHz => clk_6MHz,
 		clk_250KHz => clk_250KHz,
 		reset => reset,
