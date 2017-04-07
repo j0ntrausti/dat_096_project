@@ -18,9 +18,9 @@ end DEC_1;
 
 architecture Behavioral of DEC_1 is
 
-component linearphaseFIRbl
+component linearphaseFIRbl_v2
 GENERIC (WIDTH:INTEGER:=12;
-         N: INTEGER :=128);
+         N: INTEGER :=189);
 	port(reset      :IN STD_LOGIC;
          start      :IN STD_LOGIC;
          clk        :IN STD_LOGIC;
@@ -41,9 +41,9 @@ signal finished_i : STD_LOGIC;
 
 begin
 
-filt_r: linearphaseFIRbl
+filt_r: linearphaseFIRbl_v2
 GENERIC MAP(WIDTH => 12,
-            N => 188)
+            N => 189)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
@@ -54,9 +54,9 @@ PORT MAP(reset => reset,
          y => filt_out_r,
          finished => finished_r);
          
-filt_i: linearphaseFIRbl
+filt_i: linearphaseFIRbl_v2
 GENERIC MAP(WIDTH => 12,
-            N => 188)
+            N => 189)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
