@@ -1,3 +1,4 @@
+
 ----------------------------------------
 -- testbench type 3 for               --
 -- successive addition multiplier_tb1 --
@@ -50,7 +51,7 @@ BEGIN
                 "010000000000" AFTER 350 ns, -- 120
 		"010000000000" AFTER 450 ns; -- 120
    B_tb<=	"000000000000",  -- 0
-                "011100000000" AFTER 350 ns, -- 12,
+                "010000000000" AFTER 350 ns, -- 12,
 		"001000000000" AFTER 450 ns; -- 123
    start_tb<='0',
                     '1' AFTER 350 ns,

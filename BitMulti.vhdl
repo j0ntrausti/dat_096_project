@@ -1,4 +1,5 @@
 
+
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
@@ -49,6 +50,9 @@ begin
 	  OnGoing <= '1';
 	end if;
 	if(OnGoing = '1' AND start ='1') then
+		for i in 1 to 12 loop
+              	 Bucket(i)<=(others=> '0'); 
+		end loop;
 		for i in 1 to 12 loop
 			if B_stored(24-i) ='1' then
 				Bucket(i) <= (A_stored srl (i-1));
