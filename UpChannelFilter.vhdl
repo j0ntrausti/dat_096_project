@@ -73,10 +73,8 @@ begin
 		y_s <= (others => '0');
 		finished <= '0';
 		finished_sig <= '1';
-		for i in 0 to (2*(N-1)-2) loop
-			if (i<(2*(N-1)-1)) then
-				xL(i)<=(others=> '0'); 
-			end if;
+		for i in 0 to (N-1) loop
+			xL(i)<=(others=> '0'); 
 		end loop;
 		
 	    for i in 0 to (N-1) loop
