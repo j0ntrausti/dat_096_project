@@ -17,7 +17,7 @@ END BitMulti;
 
 ARCHITECTURE arch_BitMulti OF
                       BitMulti IS
-SIGNAL OnGoing,done:STD_LOGIC;
+SIGNAL OnGoing,done:STD_LOGIC:='0';
 SIGNAL B_stored,A_stored:signed(width-1 downto 0);
 SIGNAL Bucket:signed(2*width-1 downto 0);
 
@@ -35,7 +35,7 @@ begin
 		Bucket <= (others => '0');
 		B_stored <= (others => '0');
 		A_stored<=(others=>'0');
-	elsif rising_edge(clk) AND start='1' then
+	elsif rising_edge(clk) AND OnGoing<='0' then
 	  B_Stored <= B;
 	  A_stored <= A;
 	  Bucket(2*width-1 downto width) <= (others=>'0');

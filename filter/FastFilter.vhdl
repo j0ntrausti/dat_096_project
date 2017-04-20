@@ -35,18 +35,18 @@ architecture behaiv_arch of FastFilter is
 	     start:IN STD_LOGIC;
 	     A:IN signed(WIDTH-1 downto 0); -- X-input
 	     B:IN signed(WIDTH-1 downto 0); -- coff modified vector
-	     y:OUT signed(WIDTH-1 downto 0); -- multiplied output
+	     y:OUT signed(2*WIDTH-1 downto 0); -- multiplied output
              finished:OUT STD_LOGIC);
    END COMPONENT BitMulti;
 
 
 -- New signals
 signal swapping    :std_logic :='0'; --this shall trigger when start goes to '1' and go down when start goes to '0' to see if there is a new x or not
-signal i    :integer range 0 to N; --index for how many clkcykles the calculation have been running
+signal i    :integer range 0 to N+3; --index for how many clkcykles the calculation have been running
 signal finished_sig,GoOn    :std_logic :='1';
-signal MultiInput,MultiCoff,MultiOutput :signed(width-1 downto 0);
+signal MultiInput,MultiCoff :signed(width-1 downto 0);
 signal MultiFinished,start    :std_logic :='1'; 
-
+signal MultiOutput :signed(2*width-1 downto 0);
 
 
 
@@ -130,7 +130,7 @@ begin
 		t(16)<="000110000101";
 		t(17)<="000100000100";
 		t(18)<="000100000010";
-		t(19)<="000100000000";
+		t(19)<="000000000000";
 		
 
 
@@ -140,15 +140,18 @@ begin
 --------------------------------------------------------------------       
         if(finished_sig = '0' AND GoOn='1') then
             
-            if(i=N) then
+            if(i=N+3) then
                 finished <= '1';
                 finished_sig <= '1';
                 y <= y_s(2*width-2 downto width-1);
                 
             else
-		MultiInput<=queue2multi(i);
-		MultiCoff<=t(i);
-		if(MultiFinished<='1') then
+		if(i<N) then
+			MultiInput<=queue2multi(i);
+			MultiCoff<=t(i);
+			i <= i+1;
+			y_s <= y_s + MultiOutput;
+		elsif(i<N+3) then
 			y_s <= y_s + MultiOutput;
 			i <= i+1;
 		end if;
@@ -158,14 +161,14 @@ begin
               
             end if;
         elsif(clk250k = '1') then   
-	    GoOn<='1';  
+	    	GoOn<='1';  
         	y_s <= (others => '0');
-            finished_sig <= '0';
-            finished<='0';
-            i<=0;
-            for j in 0 to N-1 loop
-                queue2multi(j)<= MiddleAdder(j);
-            end loop;
+            	finished_sig <= '0';
+           	finished<='0';
+         	i<=0;
+           	for j in 0 to N-1 loop
+             	   queue2multi(j)<= MiddleAdder(j);
+         	end loop;
         end if;
 --------------------------------------------------------------------    
 -----------------------------READING IN ----------------------------    

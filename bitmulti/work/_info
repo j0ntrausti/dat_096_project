@@ -1,0 +1,92 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dZ:/filter
+Ebitmulti
+Z0 w1492725580
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z4 dZ:/bitmulti
+Z5 8Z:/bitmulti/BitMulti.vhdl
+Z6 FZ:/bitmulti/BitMulti.vhdl
+l0
+L7
+Vm9@Zikh2SmaN^PaC<;Sef3
+!s100 bOG<f0VeKab5EP0VRH3La0
+Z7 OL;C;10.4a;61
+32
+Z8 !s110 1492725584
+!i10b 1
+Z9 !s108 1492725584.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/bitmulti/BitMulti.vhdl|
+Z11 !s107 Z:/bitmulti/BitMulti.vhdl|
+!i113 0
+Z12 o-work work -2002 -explicit
+Z13 tExplicit 1
+Aarch_bitmulti
+R1
+R2
+R3
+DEx4 work 8 bitmulti 0 22 m9@Zikh2SmaN^PaC<;Sef3
+32
+R8
+l32
+L19
+VIVBDX_4=cCEWVW?_Y[Q1@0
+!s100 V87S47z05k3b311cV3Y620
+R7
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Ebitmulti_tb
+Z14 w1492725023
+R1
+R2
+R3
+R4
+Z15 8Z:/bitmulti/BitMulti_tb.vhdl
+Z16 FZ:/bitmulti/BitMulti_tb.vhdl
+l0
+L12
+V1i^;4K3jmizAL2RAIn8h;3
+!s100 ohHb>LK`DYzZ@RN[iH59b3
+R7
+32
+R8
+!i10b 1
+Z17 !s108 1492725583.000000
+Z18 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/bitmulti/BitMulti_tb.vhdl|
+Z19 !s107 Z:/bitmulti/BitMulti_tb.vhdl|
+!i113 0
+R12
+R13
+Aarch_bitmulti_tb
+R1
+R2
+R3
+DEx4 work 11 bitmulti_tb 0 22 1i^;4K3jmizAL2RAIn8h;3
+32
+R8
+l37
+L16
+V:LeZF;Zg;TjnkT`m[0Y9;3
+!s100 ?I>TF_8E6M@gZVMM]4VMD3
+R7
+!i10b 1
+R17
+R18
+R19
+!i113 0
+R12
+R13
