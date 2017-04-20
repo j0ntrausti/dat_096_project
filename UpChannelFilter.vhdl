@@ -6,7 +6,7 @@
 --							N = number of tabs   
 -- Takes in, generic values width (nr. of bits), N number of tabs, x[n]. 
 -- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jón Trausti
+-- Authors: JÃ³n Trausti
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -34,7 +34,7 @@ signal i,k,j,max	:integer range 0 to N; --index for how many clkcykles the calcu
 signal finished_sig	:std_logic :='1';
 -- For our x's
 -- (2*(N-1)-2) is the last X, yeah I've done the calc right, unless I'm wrong (haven't tested) 
-type xLArray is array (0 to (2*(N-1)-2)) of signed(width-1 downto 0);
+type xLArray is array (0 to (N-1)) of signed(width-1 downto 0);
 signal xL	:xLArray;
 
 type MiddleArray is array (0 to (N-1)) of signed(width-1 downto 0); --- need to fix size
@@ -216,28 +216,27 @@ t(92)<="000000000001";
 				end if;
 			end loop;
 		end if;
+			
+			
 --------------------------------------------------------------------	
 -----------------------------READING IN ----------------------------	
 --------------------------------------------------------------------  
 		if (clk6M='1' AND swapping='0') then   	
-			swapping<='1';
-			
-			-- the first adding
-			MiddleAdder(0)<=(xL((2*(N-1)-2)) + x); 
-			-- the last adding
-			MiddleAdder(N-1)<= (xL(N-1));            			
-			-- all the other adding 
-			for j in 1 to N-2 loop
-				MiddleAdder(j)<= (xL(j-1) + xL(2*(N-1)-3-j));
-			end loop;
+		            swapping<='1';
+            --y_s <= (others => '0');            
+            -- Load into an Array the swapping. 
+          	 	for j in 0 to N-1 loop
+             			MiddleAdder(j)<= (xL(j));
+			end loop;	
+						
 		elsif (swapping='1') then
 			-- this is the "delay" process, that moves x's to new location.
 			-- its ok the swap them this soon, since after we load the middle adder we don't care about them.
-			for j in 0 to (2*(N-1)-2) loop
-				if (j<(2*(N-1)-2)) then
-					xL((2*(N-1)-2)-j)<=xL((2*(N-1)-3)-j);
-				elsif (j=(2*(N-1)-2)) then
-					xL(0)<=x;
+			for j in 0 to (N-1) loop
+                		if (j<(N-1)) then
+                   			xL((N-1)-j)<=xL((N-2)-j);
+              			elsif (j=(N-1)) then
+                   		 	xL(0) <= x;
 				end if;
 			end loop;
 			swapping<='0';	
