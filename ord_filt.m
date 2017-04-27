@@ -5,8 +5,8 @@ k = 1000; % factors
 M = 1000000; % factors
 R = 48; % sampling vs. message freq. ratio
 
-ap = 0.5; % dB peak passband ripple max amount
-as = 65; % dB stopband attenuation min amount
+ap = 1.0; % dB peak passband ripple max amount
+as = 60; % dB stopband attenuation min amount
 
 dp = 1 - 10^(-ap/20); %ripple in passband, need to find good figure
 ds = 10^(-as/20); %dB suppresion in the stop band
@@ -14,7 +14,7 @@ ds = 10^(-as/20); %dB suppresion in the stop band
 ft = 100*M/17 ; %R*f_c; % at least....
 ft2 = 250*k;
 
-fs = 200*k;
+fs = 131.75*k;
 fs2 = 18.75*k;
 
 bits = 16;

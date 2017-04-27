@@ -265,10 +265,10 @@ t(187)<="000000000000";
 				onGoing<='0';
 				finished<='1';
 				y_t<=(((xL(i-1))*(t(i))+(y_s)) sll 1); -- maybe I need to shift it??
-				for j in 0 to ((N-1)-2) loop--Swap the x-array
-					if (j<(2*(N-1)-2)) then
+				for j in 0 to ((N-1)) loop--Swap the x-array
+					if (j<((N-1))) then
 						xL(((N-1))-j)<=xL(((N-1)-1)-j);
-					elsif (j=((N-1)-2)) then
+					elsif (j=((N-1))) then
 						xL(0)<=x;
 					end if;
 				end loop;
@@ -281,5 +281,5 @@ t(187)<="000000000000";
 		end if;
 	end if;
 end process;
-y <= y_t(2*width-1 downto widt)
+y <= y_t(2*width-1 downto width);
 end behaiv_arch;

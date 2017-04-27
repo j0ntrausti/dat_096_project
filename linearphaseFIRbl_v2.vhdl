@@ -55,7 +55,7 @@ begin
 		onGoing<='0'; -- Pretty much same as start, just double sec. since start is input signal
 		i<=0;	-- reset the counter 
 	
-		for i in 0 to (2*(N-1)-1) loop
+		for i in 0 to (2*N) loop
 				xL(i)<=(others=> '0'); 
 		
 		end loop;

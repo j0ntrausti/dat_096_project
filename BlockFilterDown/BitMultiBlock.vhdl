@@ -15,7 +15,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
 ENTITY BitMultiBlock IS
-   GENERIC (WIDTH:INTEGER:=12);
+   GENERIC (WIDTH:INTEGER:=24);
 	PORT(reset:IN STD_LOGIC;
              clk:IN STD_LOGIC;
 	     start:IN STD_LOGIC;
@@ -31,7 +31,7 @@ ARCHITECTURE arch_BitMultiBlock OF
 SIGNAL OnGoing,done:STD_LOGIC:='0';
 SIGNAL B_stored,A_stored:signed(2*width-1 downto 0);
 SIGNAL outs:signed(2*width-1 downto 0);
-type BucketA is array (1 to 12) of signed(2*width-1 downto 0);
+type BucketA is array (1 to 24) of signed(2*width-1 downto 0);
 signal Bucket	:BucketA;
 
 -- B_stored,Bucket = 10 bits
@@ -54,7 +54,7 @@ begin
 		outs <= (others => '0');
 		B_stored <= (others => '0');
 		A_stored <= (others => '0');
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
                Bucket(i)<=(others=> '0'); 
 		end loop;
 	elsif rising_edge(clk) AND start='1' AND OnGoing<='0' then
@@ -72,21 +72,21 @@ begin
 ------------------------------------------------------------
 
 	if(OnGoing = '1' AND start ='1' AND A_stored(2*width-1)='0' AND B_stored(2*width-1)='0') then
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
               	 Bucket(i)<=(others=> '0'); 
 		end loop;
-		for i in 1 to 12 loop
-			if B_stored(23-i) ='1' then
+		for i in 1 to 24 loop
+			if B_stored(47-i) ='1' then
 				Bucket(i) <= (A_stored srl (i));
-				if(i = 12) then
+				if(i = 24) then
 					finished <= '1';
 					OnGoing <= '0';
-					y <= Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+					y <= Bucket(24)+Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 				end if;	
-			elsif(i = 12) then 
+			elsif(i = 24) then 
 				finished <= '1';
 				OnGoing <= '0';
-				y <= Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+				y <= Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 			end if;
 		
 		end loop;
@@ -97,21 +97,21 @@ begin
 
 
 	elsif(OnGoing ='1' AND start='1' AND A_stored(2*width-1)='1' AND B_stored(2*width-1)='1') then
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
               	 Bucket(i)<=(others=> '0'); 
 		end loop;
-		for i in 1 to 12 loop
-			if B_stored(23-i) ='0' then
-				Bucket(i) <= ((NOT(A_stored) + "000000000001") srl (i));
-				if(i = 12) then
+		for i in 1 to 24 loop
+			if B_stored(47-i) ='0' then
+				Bucket(i) <= ((NOT(A_stored) + 1) srl (i));
+				if(i = 24) then
 					finished <= '1';
 					OnGoing <= '0';
-					y <= Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+					y <= 	Bucket(24)+Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 				end if;	
-			elsif(i = 12) then 
+			elsif(i = 24) then 
 				finished <= '1';
 				OnGoing <= '0';
-				y <= Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+				y <= 	Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 			end if;
 		
 		end loop;
@@ -122,21 +122,22 @@ begin
 
 
 	elsif(OnGoing ='1' AND start='1' AND A_stored(2*width-1)='1' AND B_stored(2*width-1)='0') then
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
               	 Bucket(i)<=(others=> '0'); 
 		end loop;
-		for i in 1 to 12 loop
-			if B_stored(23-i) ='1' then
-				Bucket(i) <= NOT((NOT(A_stored) + "000000000001") srl (i)) + "000000000001" ;
-				if(i = 12) then
+		for i in 1 to 24 loop
+			if B_stored(47-i) ='1' then
+				Bucket(i) <= NOT((NOT(A_stored) + 1) srl (i)) + 1 ;
+				if(i = 24) then
 					finished <= '1';
 					OnGoing <= '0';
-					y <= Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+					y <= Bucket(24)+Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+
 				end if;	
-			elsif(i = 12) then 
+			elsif(i = 24) then 
 				finished <= '1';
 				OnGoing <= '0';
-				y <= Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+				y <=Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 			end if;
 		
 		end loop;
@@ -150,21 +151,21 @@ begin
 
 	elsif(OnGoing ='1' AND start='1' AND A_stored(2*width-1)='0' AND B_stored(2*width-1)='1') then
 		
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
               	 Bucket(i)<=(others=> '0'); 
 		end loop;
-		for i in 1 to 12 loop
-			if B_stored(23-i) ='0' then
+		for i in 1 to 24 loop
+			if B_stored(47-i) ='0' then
 				Bucket(i) <= NOT((A_stored srl (i))) ;
-				if(i = 12) then
+				if(i = 24) then
 					finished <= '1';
 					OnGoing <= '0';
-					y <= Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+					y <= Bucket(24)+Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 				end if;	
-			elsif(i = 12) then 
+			elsif(i = 24) then 
 				finished <= '1';
 				OnGoing <= '0';
-				y <= Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
+				y <= Bucket(23)+Bucket(22)+ Bucket(21)+Bucket(20)+ Bucket(19)+Bucket(18)+ Bucket(17)+Bucket(16)+ Bucket(15)+Bucket(14)+Bucket(13)+Bucket(12)+Bucket(11)+Bucket(10)+ Bucket(9)+Bucket(8)+ Bucket(7)+Bucket(6)+ Bucket(5)+Bucket(4)+ Bucket(3)+Bucket(2)+Bucket(1);
 			end if;
 		
 		end loop;
@@ -175,7 +176,7 @@ begin
 	elsif(OnGoing ='1' AND start='1') then
 
 
-		for i in 1 to 12 loop
+		for i in 1 to 24 loop
               	 Bucket(i)<=(others=> '0'); 
 		end loop;
 		OnGoing <= '0';

@@ -10,7 +10,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity FastFilter is
+entity FastFilter_block is
     generic(Width    :integer     :=12;
         N :integer    :=4);
     port(    reset:IN STD_LOGIC;
@@ -20,11 +20,11 @@ entity FastFilter is
            x:IN signed(width-1 DOWNTO 0);
            y:OUT signed(WIDTH-1 DOWNTO 0);
            finished:OUT STD_LOGIC);
-end FastFilter;
+end FastFilter_block;
 
 
 
-architecture behaiv_arch of FastFilter is
+architecture behaiv_arch of FastFilter_block is
 
 
 -- New signals
@@ -267,7 +267,7 @@ t(0)<="000000000000";
 		t(184)<="000000000000";
 		t(185)<="000000000000";
 		t(186)<="000000000000";
-t(187)<="000000000000";
+        t(187)<="000000000000";
 
 
 
