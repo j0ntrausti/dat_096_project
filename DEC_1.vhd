@@ -18,16 +18,16 @@ end DEC_1;
 
 architecture Behavioral of DEC_1 is
 
-component linearphaseFIRbl_v2
+component FastFilter
 GENERIC (WIDTH:INTEGER:=12;
-         N: INTEGER :=189);
+         N: INTEGER :=2018);
 	port(reset      :IN STD_LOGIC;
-         start      :IN STD_LOGIC;
+         --start      :IN STD_LOGIC;
          clk        :IN STD_LOGIC;
-         --clk250k    :IN STD_LOGIC;
-         --clk6M      :IN STD_LOGIC;
-         x          :IN signed(WIDTH-1 DOWNTO 0);
-         y          :OUT signed(WIDTH-1 DOWNTO 0);
+         clk250k    :IN STD_LOGIC;
+         clk6M      :IN STD_LOGIC;
+         x          :IN signed(WIDTH-13 DOWNTO 0);
+         y          :OUT signed(WIDTH-13 DOWNTO 0);
          finished   :OUT STD_LOGIC);
 end component;
 
@@ -41,28 +41,28 @@ signal finished_i : STD_LOGIC;
 
 begin
 
-filt_r: linearphaseFIRbl_v2
-GENERIC MAP(WIDTH => 12,
-            N => 189)
+filt_r: FastFilter
+GENERIC MAP(WIDTH => 24,
+            N => 2018)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
-         --clk250k => clk_250KHz,
-         --clk6M => clk_6MHz,
-         start => clk_6MHz,
+         clk250k => clk_250KHz,
+         clk6M => clk_6MHz,
+         --start => clk_6MHz,
          x =>in_r,
          y => filt_out_r,
          finished => finished_r);
          
-filt_i: linearphaseFIRbl_v2
-GENERIC MAP(WIDTH => 12,
-            N => 189)
+filt_i: FastFilter
+GENERIC MAP(WIDTH => 24,
+            N => 2018)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
-         --clk250k => clk_250KHz,
-         --clk6M => clk_6MHz,
-         start => clk_6MHz,
+         clk250k => clk_250KHz,
+         clk6M => clk_6MHz,
+         --start => clk_6MHz,
          x => in_i,
          y => filt_out_i,
          finished => finished_i);
