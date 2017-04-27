@@ -241,10 +241,10 @@ PORT MAP(
 		);
 
 --DEC_1_block_0
-	Decimation_1_block_0: DEC_1
+	DEC_1_block_0: DEC_1
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-	    clk_100MHz => clk_uber,
+	    clk_100MHz => clk_100MHz,
 	    clk_6MHz => clk_6MHz,
 		clk_250KHz => clk_250KHz,
 		reset => reset,
