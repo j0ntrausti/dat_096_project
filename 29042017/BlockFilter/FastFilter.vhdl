@@ -7,7 +7,7 @@
 --			      M = Channel filter type, (to maximise the available space for multiplication)
 -- Takes in, generic values width (nr. of bits), N number of tabs, x[n].
 -- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jo³n Trausti
+-- Authors: JoÂ³n Trausti
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -38,14 +38,12 @@ signal finished_sig,GoOn,Load_On    :std_logic :='0';
 signal a_s,b_s,c_s,d_s,e_s,f_s     :signed(2*width-1 downto 0);--temporary output
 
 
-type a_pipe is array (0 to N-1) of signed(width-1 downto 0);
-type a_queue2multi is array (0 to N-1) of signed(width-1 downto 0);
-type a_tL is array (0 to N-1) of signed(width-1 downto 0);
 
-signal pipe    		: a_pipe;
-signal queue2multi	:a_queue2multi;
-signal t		:a_tL;
+type a_array is array (0 to (N-1)) of signed(width-1 downto 0);
 
+signal t		:a_array;
+signal queue2multi	:a_array;
+signal pipe		:a_array;
 
 
 
