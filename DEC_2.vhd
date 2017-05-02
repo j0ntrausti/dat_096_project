@@ -17,7 +17,7 @@ end DEC_2;
 
 architecture Behavioral of DEC_2 is
 
-component FastFilter_channel
+component ChannelFilter_1
 GENERIC (WIDTH:INTEGER:=12;
          N: INTEGER :=93);
 	port(reset      :IN STD_LOGIC;
@@ -40,7 +40,7 @@ signal finished_i : STD_LOGIC;
 
 begin
 
-filt_r: FastFilter_channel
+filt_r: ChannelFilter_1
 GENERIC MAP(WIDTH => WIDTH,
             N => 93)
 PORT MAP(reset => reset,
@@ -52,7 +52,7 @@ PORT MAP(reset => reset,
          y => filt_out_r,
          finished => finished_r);
          
-filt_i: FastFilter_channel
+filt_i: ChannelFilter_1
 GENERIC MAP(WIDTH => WIDTH,
             N => 93)
 PORT MAP(reset => reset,
