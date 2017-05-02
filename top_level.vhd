@@ -140,19 +140,33 @@ Port ( clk_100MHz : in STD_LOGIC;
        );
 end component;
        
+----DEC_2 OLD!
+--component DEC_2
+--GENERIC (WIDTH:INTEGER:=WIDTH);
+--Port ( clk_100MHz : in STD_LOGIC;
+--       clk_250KHz : in STD_LOGIC;
+--       clk_31KHz : in STD_LOGIC;
+--       reset : in STD_LOGIC;
+--       in_r : in signed(WIDTH-1 downto 0);
+--       in_i : in signed(WIDTH-1 downto 0);
+--       out_r : out signed(WIDTH-1 downto 0);
+--       out_i : out signed(WIDTH-1 downto 0)
+--       );
+--end component;
+
 --DEC_2
 component DEC_2
 GENERIC (WIDTH:INTEGER:=WIDTH);
 Port ( clk_100MHz : in STD_LOGIC;
-       clk_250KHz : in STD_LOGIC;
+	   clk_250KHz : in STD_LOGIC;
        clk_31KHz : in STD_LOGIC;
        reset : in STD_LOGIC;
-       in_r : in signed(WIDTH-1 downto 0);
-       in_i : in signed(WIDTH-1 downto 0);
-       out_r : out signed(WIDTH-1 downto 0);
-       out_i : out signed(WIDTH-1 downto 0)
+       in_channels : in Channels;
+       out_channels : out Channels
        );
 end component;
+
+        
 
 --SIGNAL DECLARATIONS
 --Clocks
@@ -279,22 +293,34 @@ PORT MAP(
 		);
 
 --Channel Filters:
-DEC_2_Channel:
-for i in 0 to 7 generate
---DEC_2_channel_0_block_1
-	Dec: DEC_2
+--DEC_2_Channel:
+--for i in 0 to 7 generate
+----DEC_2_channel_0_block_1
+--	Dec: DEC_2
+--	GENERIC MAP(WIDTH => WIDTH)
+--	PORT MAP( 
+--		clk_100MHz => clk_100MHz,
+--        clk_250KHz => clk_250KHz,
+--        clk_31KHz => clk_31KHz,
+--		reset => reset,
+--		in_r => signals_undec(0)(2*i),
+--		in_i => signals_undec(0)(2*i+1),
+--		out_r => signals_dec(0)(2*i),
+--		out_i => signals_dec(0)(2*i+1)
+--		);
+--end generate DEC_2_Channel;
+
+--DEC_1_block_0
+	DEC_2_block_0: DEC_2
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-		clk_100MHz => clk_100MHz,
-        clk_250KHz => clk_250KHz,
+	    clk_100MHz => clk_100MHz,
+	    clk_250KHz => clk_250KHz,
         clk_31KHz => clk_31KHz,
 		reset => reset,
-		in_r => signals_undec(0)(2*i),
-		in_i => signals_undec(0)(2*i+1),
-		out_r => signals_dec(0)(2*i),
-		out_i => signals_dec(0)(2*i+1)
+		in_channels => signals_undec(0),
+		out_channels => signals_dec(0)
 		);
-end generate DEC_2_Channel;
 
 
 --Redirect (doesn't exist yet)
