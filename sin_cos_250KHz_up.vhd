@@ -4,9 +4,9 @@ use ieee.numeric_std.all;
 LIBRARY dds_compiler_v6_0_12;
 USE dds_compiler_v6_0_12.dds_compiler_v6_0_12;
 
-entity sin_cos_6MHz_up_1 is
+entity sin_cos_4MHz_up_1 is
 GENERIC (WIDTH:INTEGER:=10);
-Port ( clk_6MHz : in STD_LOGIC;
+Port ( clk_4MHz : in STD_LOGIC;
        Cos_0 : out signed(WIDTH-1 downto 0); -- 375KHz
        Cos_1 : out signed(WIDTH-1 downto 0); -- 343.75KHz
        Cos_2 : out signed(WIDTH-1 downto 0); -- 312.5KHz
@@ -23,9 +23,9 @@ Port ( clk_6MHz : in STD_LOGIC;
        Sin_5 : out signed(WIDTH-1 downto 0); -- 218.75KHz
        Sin_6 : out signed(WIDTH-1 downto 0); -- 187.5KHz
        Sin_7 : out signed(WIDTH-1 downto 0));-- 156.25KHz
-end sin_cos_6MHz_up_1;
+end sin_cos_4MHz_up_1;
 
-architecture Behavioral of sin_cos_6MHz_up_1 is
+architecture Behavioral of sin_cos_4MHz_up_1 is
 
 --DDS compiler IP-block, gives all outputs in "m_axis_data_tdata"
 --with some padding. Check it in simulation and extract the different channels
@@ -160,7 +160,7 @@ signal outs_7 : STD_LOGIC_VECTOR(31 DOWNTO 0);
 
 begin
 DDS_0: dds_0_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_0,
          m_axis_data_tdata => outs_0
          --m_axis_phase_tvalid => phase_valid_0,
@@ -168,7 +168,7 @@ DDS_0: dds_0_2 PORT MAP (
          );
 
 DDS_1: dds_1_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_1,
          m_axis_data_tdata => outs_1
          --m_axis_phase_tvalid => phase_valid_1,
@@ -176,7 +176,7 @@ DDS_1: dds_1_2 PORT MAP (
          );
 
 DDS_2: dds_2_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_2,
          m_axis_data_tdata => outs_2
          --m_axis_phase_tvalid => phase_valid_2,
@@ -184,7 +184,7 @@ DDS_2: dds_2_2 PORT MAP (
          );
 
 DDS_3: dds_3_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_3,
          m_axis_data_tdata => outs_3
          --m_axis_phase_tvalid => phase_valid_3,
@@ -192,7 +192,7 @@ DDS_3: dds_3_2 PORT MAP (
          );
          
 DDS_4: dds_4_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_4,
          m_axis_data_tdata => outs_4
          --m_axis_phase_tvalid => phase_valid_4,
@@ -200,7 +200,7 @@ DDS_4: dds_4_2 PORT MAP (
          );
          
 DDS_5: dds_5_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_5,
          m_axis_data_tdata => outs_5
          --m_axis_phase_tvalid => phase_valid_5,
@@ -208,7 +208,7 @@ DDS_5: dds_5_2 PORT MAP (
          );
 
 DDS_6: dds_6_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_6,
          m_axis_data_tdata => outs_6
          --m_axis_phase_tvalid => phase_valid_6,
@@ -216,7 +216,7 @@ DDS_6: dds_6_2 PORT MAP (
          );
          
 DDS_7: dds_7_2 PORT MAP (
-         aclk => clk_6MHz,
+         aclk => clk_4MHz,
          m_axis_data_tvalid => data_valid_7,
          m_axis_data_tdata => outs_7
          --m_axis_phase_tvalid => phase_valid_7,
