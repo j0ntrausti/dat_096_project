@@ -18,16 +18,16 @@ end DEC_1_250;
 
 architecture Behavioral of DEC_1_250 is
 
-component FastFilter
+component Block_Filter_250
 GENERIC (WIDTH:INTEGER:=12;
          N: INTEGER :=2018);
 	port(reset      :IN STD_LOGIC;
          --start      :IN STD_LOGIC;
          clk        :IN STD_LOGIC;
          clk250k    :IN STD_LOGIC;
-         clk6M      :IN STD_LOGIC;
-         x          :IN signed(WIDTH-13 DOWNTO 0);
-         y          :OUT signed(WIDTH-13 DOWNTO 0);
+         clk4M      :IN STD_LOGIC;
+         x          :IN signed(WIDTH-5 DOWNTO 0);
+         y          :OUT signed(WIDTH-5 DOWNTO 0);
          finished   :OUT STD_LOGIC);
 end component;
 
@@ -41,27 +41,27 @@ signal finished_i : STD_LOGIC;
 
 begin
 
-filt_r: FastFilter
-GENERIC MAP(WIDTH => 24,
-            N => 2018)
+filt_r: Block_Filter_250
+GENERIC MAP(WIDTH => 16,
+            N => 182)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
          clk250k => clk_250KHz,
-         clk6M => clk_4MHz,
+         clk4M => clk_4MHz,
          --start => clk_6MHz,
          x =>in_r,
          y => filt_out_r,
          finished => finished_r);
          
-filt_i: FastFilter
-GENERIC MAP(WIDTH => 24,
-            N => 2018)
+filt_i: Block_Filter_250
+GENERIC MAP(WIDTH => 16,
+            N => 182)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
          clk250k => clk_250KHz,
-         clk6M => clk_4MHz,
+         clk4M => clk_4MHz,
          --start => clk_6MHz,
          x => in_i,
          y => filt_out_i,
