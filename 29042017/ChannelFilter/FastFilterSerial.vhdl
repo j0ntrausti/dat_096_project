@@ -36,13 +36,13 @@ architecture behaiv_arch of ChannelFilter_1 is
 signal M    :integer:=0;
 signal Ch   :integer:=16; --nr of channels (real and imaginary)
 signal i    :integer range 0 to N+3; --index for how many clkcykles the calculation have been running
-signal k    :integer range 0 to (Ch):= 0; --
+signal k    :integer range 0 to 16:=0; --
 signal finished_sig,GoOn,Load_On    :std_logic :='0';
 signal y_s    :signed(2*width-1 downto 0);--temporary output
 
 
 type a_array is array (0 to (N-1)) of signed(width-1 downto 0);
-type b_array is array (0 to Ch-1) of a_array;
+type b_array is array (0 to 16-1) of a_array;
 
 
 
@@ -58,6 +58,8 @@ type b_array is array (0 to Ch-1) of a_array;
 
 begin
 
+
+
 process(clk,reset)
 begin
 
@@ -67,12 +69,12 @@ begin
         i<=0;    -- reset the counter
 	k<=0;
         y_s <= (others => '0');
-        for i in 0 to Ch-1 loop
+        for i in 0 to 16-1 loop
             y(i) <= (others => '0');
         end loop;
         finished <= '0';
         finished_sig <= '1'; 
-        for k in 0 to Ch-1 loop
+        for k in 0 to 16-1 loop
             for i in 0 to (N-1) loop
                 pipe(k)(i)<=(others=> '0');
                 queue2multi(k)(i)<=(others=> '0');
@@ -190,10 +192,10 @@ t(0)<="000000000001";
          	i<=0;
 		    k<=0;
 	elsif(finished_sig = '0' AND Load_On='0' AND GoOn='1') then
-		if(i<N AND k<ch) then
+		if(i<N AND k<16) then
 			y_s <= y_s + (queue2multi(k)(i)*t(i));
 			i <= i+1;
-		elsif(k<Ch) then
+		elsif(k<16) then
             y(k) <= y_s(2*width-2 downto width-1);
             y_s <= (others => '0'); 
             k<=k+1;
@@ -209,7 +211,7 @@ t(0)<="000000000001";
 --------------------------------------------------------------------  
 
 	if (clk6M='1' ) then 
-		for i in 0 to Ch-1 loop
+		for i in 0 to 16-1 loop
 		  pipe(i) <= x(i) & pipe(i)(0 to N-2);
 --		  pipe(1) <= x(1) & pipe(1)(0 to N-2);
 --		  pipe(2) <= x(2) & pipe(2)(0 to N-2);
@@ -229,7 +231,7 @@ t(0)<="000000000001";
 		  
 	    end loop;
 	elsif(Load_On ='1') then
-		for i in 0 to Ch-1 loop
+		for i in 0 to 16-1 loop
 		  for j in 0 to N-1 loop
             queue2multi(i)(j)<= pipe(i)(j);
           end loop;
