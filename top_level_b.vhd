@@ -28,7 +28,7 @@ component clk_enable_generic
 GENERIC (N:integer); --how fast should the clock be.
 Port  (	clk 		: in STD_LOGIC;
 		    reset		: in STD_LOGIC;
-		    end_clk		: out STD_LOGIC;
+		    --end_clk		: out STD_LOGIC;
 		    clk_enable	: out STD_LOGIC
 		    );
 end component;
@@ -36,7 +36,7 @@ end component;
 --ADC
 component ADC    
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_6MHz : in STD_LOGIC;
+Port ( clk_4MHz : in STD_LOGIC;
        reset 	: in STD_LOGIC;
        adc_out 	: out STD_LOGIC_VECTOR(WIDTH-1 downto 0)
        );
@@ -45,7 +45,7 @@ end component;
 --First mixer down step
 component Mixer_down_1    
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_6MHz : in STD_LOGIC;
+Port ( clk_4MHz : in STD_LOGIC;
        in_r : in signed(WIDTH-1 downto 0);
        in_i : in signed(WIDTH-1 downto 0);
        out_r_0 : out signed(WIDTH-1 downto 0);
@@ -87,7 +87,7 @@ end component;
 --First mixer up step
 component Mixer_up_1   
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_6MHz : in STD_LOGIC;
+Port ( clk_4MHz : in STD_LOGIC;
         in_r_0 : in signed(WIDTH-1 downto 0);
         in_i_0 : in signed(WIDTH-1 downto 0);
         in_r_1 : in signed(WIDTH-1 downto 0);
@@ -112,7 +112,7 @@ end component;
 --Second mixer up step
 component Mixer_up_2    
 GENERIC (WIDTH:INTEGER:=WIDTH);
-Port ( clk_6MHz : in STD_LOGIC;
+Port ( clk_4MHz : in STD_LOGIC;
         in_r_0 : in signed(WIDTH-1 downto 0);
         in_i_0 : in signed(WIDTH-1 downto 0);
         in_r_1 : in signed(WIDTH-1 downto 0);
@@ -195,8 +195,10 @@ signal clk_31KHz : std_logic :='0';
 signal adc_out : STD_LOGIC_VECTOR(WIDTH-1 downto 0);
 --mixer_down_1
 signal blocks_undec: Blocks; 		--2D array
---DEC_1
-signal blocks_dec: Blocks; 			--2D array
+--DEC_1_500
+signal blocks_dec_1: Blocks; 			--2D array
+--DEC_1_250
+signal blocks_dec_2: Blocks; 			--2D array
 --Mixer_down_2
 signal signals_undec: Signals; 		--3D array
 --DEC_2
@@ -220,7 +222,7 @@ begin
 --Clock Enables
 --4MHz
 Clk_en_4MHz: clk_enable_generic 
-GENERIC MAP(N => 26)
+GENERIC MAP(N => 25)
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
@@ -228,22 +230,22 @@ PORT MAP (
 
 --500KHz
 Clk_en_500KHz: clk_enable_generic 
-    GENERIC MAP(N => 407) 
+    GENERIC MAP(N => 200) 
     PORT MAP (
         clk => clk_100MHz,
         reset => reset,
-        clk_enable => clk_250KHz);
+        clk_enable => clk_500KHz);
 
 --250KHz
 Clk_en_250KHz: clk_enable_generic 
-GENERIC MAP(N => 407) 
+GENERIC MAP(N => 400) 
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
     clk_enable => clk_250KHz);
 --31.5k     
 Clk_en_31KHz: clk_enable_generic 
-GENERIC MAP(N => 3263)
+GENERIC MAP(N => 3200)
 PORT MAP (
     clk => clk_100MHz,
     reset => reset,
@@ -285,8 +287,8 @@ PORT MAP(
 		reset => reset,
 		in_r => blocks_undec(0),
 		in_i => blocks_undec(1),
-		out_r => blocks_dec(0),
-		out_i => blocks_dec(1)
+		out_r => blocks_dec_1(0),
+		out_i => blocks_dec_1(1)
 		);
 
 --DEC_1_250_block_0
@@ -297,17 +299,18 @@ PORT MAP(
                 clk_4MHz => clk_4MHz,
                 clk_250KHz => clk_250KHz,
                 reset => reset,
-                in_r => blocks_undec(0),
-                in_i => blocks_undec(1),
-                out_r => blocks_dec(0),
-                out_i => blocks_dec(1)
+                in_r => blocks_dec_1(0),
+                in_i => blocks_dec_1(1),
+                out_r => blocks_dec_2(0),
+                out_i => blocks_dec_2(1)
                 );
+                
 	Mixer_dnw_2_block_0: Mixer_down_2    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
 		clk_250KHz => clk_250KHz,
-		in_r => blocks_dec(0),
-		in_i => blocks_dec(1),
+		in_r => blocks_dec_2(0),
+		in_i => blocks_dec_2(1),
 		out_r_0 => signals_undec(0)(0),
 		out_i_0 => signals_undec(0)(1),
 		out_r_1 => signals_undec(0)(2),
@@ -355,6 +358,8 @@ PORT MAP(
 		in_channels => signals_undec(0),
 		out_channels => signals_dec(0)
 		);
+		
+
 
 
 --Redirect (doesn't exist yet)
@@ -380,7 +385,7 @@ signals_redirected <= signals_dec;
 Mixer_up_1_block_0: Mixer_up_1    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-		clk_6MHz => clk_6MHz,
+		clk_4MHz => clk_4MHz,
 		in_r_0 => signals_redirected(0)(0),
 		in_i_0 => signals_redirected(0)(1),
 		in_r_1 => signals_redirected(0)(2),
@@ -416,7 +421,7 @@ blocks_pol(7) <= blocks_unpol(7);
 Mixer_up_2_block_0: Mixer_up_2    
 	GENERIC MAP(WIDTH => WIDTH)
 	PORT MAP( 
-		clk_6MHz => clk_6MHz,
+		clk_4MHz => clk_4MHz,
 		in_r_0 => blocks_pol(0),
 		in_i_0 => blocks_pol(1),
 		in_r_1 => blocks_pol(2),
