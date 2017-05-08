@@ -5,15 +5,17 @@ use ieee.numeric_std.all ;
 
 
 entity interpolator is
-	port(	Clk_enable: in std_logic; -- input the higher Clk_enable (To interpolate to 6 Mhz, this should be 6 Mhz)
+	Generic(WIDTH : integer:=12;
+			interpolate: integer:=8);
+	port(Clk_enable: in std_logic; -- input the higher Clk_enable (To interpolate to 6 Mhz, this should be 6 Mhz)
 		reset: in std_logic;
-		input: in std_logic_vector(11 downto 0);
-		output: out std_logic_vector(11 downto 0));
+		input: in signed(11 downto 0);
+		output: out signed(11 downto 0));
 end interpolator; 
 
 architecture interpolator_arch of interpolator is
 
-signal interpolate: integer := 8; -- Interpolation factor (For 1 Mhz to 6Mhz, put 6 here)
+--signal interpolate: integer := 8; -- Interpolation factor (For 1 Mhz to 6Mhz, put 6 here)
 signal counter: integer := 0;
 
 BEGIN
