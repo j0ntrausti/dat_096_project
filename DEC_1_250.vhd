@@ -31,11 +31,11 @@ GENERIC (WIDTH:INTEGER:=12;
          finished   :OUT STD_LOGIC);
 end component;
 
-signal start_r : STD_LOGIC;
+--signal start_r : STD_LOGIC;
 signal filt_out_r : signed(WIDTH-1 DOWNTO 0);
 signal finished_r : STD_LOGIC;
 
-signal start_i : STD_LOGIC;
+--signal start_i : STD_LOGIC;
 signal filt_out_i : signed(WIDTH-1 DOWNTO 0);
 signal finished_i : STD_LOGIC;
 
