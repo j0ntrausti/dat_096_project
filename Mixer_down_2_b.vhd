@@ -32,20 +32,22 @@ architecture Behavioral of Mixer_down_2 is
 component sin_cos_250KHz    
 GENERIC (WIDTH:INTEGER:=10);
 PORT ( clk_250KHz : in STD_LOGIC;
-       Cos_0 : out signed(WIDTH-1 downto 0); -- -125KHz
-       Cos_1 : out signed(WIDTH-1 downto 0); -- -93.75KHz
-       Cos_2 : out signed(WIDTH-1 downto 0); -- -62.5KHz
-       Cos_3 : out signed(WIDTH-1 downto 0); -- -31.25KHz
-       Cos_5 : out signed(WIDTH-1 downto 0); --  31.25KHz
-       Cos_6 : out signed(WIDTH-1 downto 0); --  62.5KHz
-       Cos_7 : out signed(WIDTH-1 downto 0); --  93.75KHz
-       Sin_0 : out signed(WIDTH-1 downto 0); -- -125KHz
-       Sin_1 : out signed(WIDTH-1 downto 0); -- -93.75KHz
-       Sin_2 : out signed(WIDTH-1 downto 0); -- -62.5KHz
-       Sin_3 : out signed(WIDTH-1 downto 0); -- -31.25KHz
-       Sin_5 : out signed(WIDTH-1 downto 0); --  31.25KHz
-       Sin_6 : out signed(WIDTH-1 downto 0); --  62.5KHz
-       Sin_7 : out signed(WIDTH-1 downto 0));--  93.75KHz
+    Cos_0 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -109.375KHz
+    Cos_1 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -78.125KHz
+    Cos_2 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -46.875KHz
+    Cos_3 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -15.625KHz
+    Cos_4 : out signed(WIDTH-1 downto 0):= (others => '0'); --  15.625KHz
+    Cos_5 : out signed(WIDTH-1 downto 0):= (others => '0'); --  46.875KHz
+    Cos_6 : out signed(WIDTH-1 downto 0):= (others => '0'); --  78.125KHz
+    Cos_7 : out signed(WIDTH-1 downto 0):= (others => '0'); --  109.375KHz
+    Sin_0 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -109.375KHz
+    Sin_1 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -78.125KHz
+    Sin_2 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -46.875KHz
+    Sin_3 : out signed(WIDTH-1 downto 0):= (others => '0'); -- -15.625KHz
+    Sin_4 : out signed(WIDTH-1 downto 0):= (others => '0'); --  15.625KHz
+    Sin_5 : out signed(WIDTH-1 downto 0):= (others => '0'); --  46.875KHz
+    Sin_6 : out signed(WIDTH-1 downto 0):= (others => '0'); --  78.125KHz
+    Sin_7 : out signed(WIDTH-1 downto 0):= (others => '0'));--  109.375KHz
 end component;
 
 component Multiplier
@@ -65,6 +67,7 @@ signal Cos_0 : signed(WIDTH-1 downto 0);
 signal Cos_1 : signed(WIDTH-1 downto 0);
 signal Cos_2 : signed(WIDTH-1 downto 0);
 signal Cos_3 : signed(WIDTH-1 downto 0);
+signal Cos_4 : signed(WIDTH-1 downto 0);
 signal Cos_5 : signed(WIDTH-1 downto 0);
 signal Cos_6 : signed(WIDTH-1 downto 0);
 signal Cos_7 : signed(WIDTH-1 downto 0);
@@ -73,6 +76,7 @@ signal Sin_0 : signed(WIDTH-1 downto 0);
 signal Sin_1 : signed(WIDTH-1 downto 0);
 signal Sin_2 : signed(WIDTH-1 downto 0);
 signal Sin_3 : signed(WIDTH-1 downto 0);
+signal Sin_4 : signed(WIDTH-1 downto 0);
 signal Sin_5 : signed(WIDTH-1 downto 0);
 signal Sin_6 : signed(WIDTH-1 downto 0);
 signal Sin_7 : signed(WIDTH-1 downto 0);
@@ -88,6 +92,7 @@ PORT MAP (
        Cos_1 => Cos_1,
        Cos_2 => Cos_2,
        Cos_3 => Cos_3,
+       Cos_4 => Cos_4,
        Cos_5 => Cos_5,
        Cos_6 => Cos_6,
        Cos_7 => Cos_7,
@@ -95,6 +100,7 @@ PORT MAP (
        Sin_1 => Sin_1,
        Sin_2 => Sin_2,
        Sin_3 => Sin_3,
+       Sin_4 => Sin_4,
        Sin_5 => Sin_5,
        Sin_6 => Sin_6,
        Sin_7 => Sin_7
@@ -148,6 +154,18 @@ PORT MAP (
     ut_i => out_i_3
   );
   
+mult_4: Multiplier
+GENERIC MAP(WIDTH => WIDTH)
+PORT MAP (
+    clk => clk_250KHz,
+    a_r => in_r,
+    a_i => in_i,
+    b_r => Cos_4,
+    b_i => Sin_4,
+    ut_r => out_r_4,
+    ut_i => out_i_4
+  );
+  
 mult_5: Multiplier
   GENERIC MAP(WIDTH => WIDTH)
 PORT MAP (
@@ -183,8 +201,5 @@ PORT MAP (
     ut_r => out_r_7,
     ut_i => out_i_7
   );
-  
-out_r_4 <= (others=> '0');
-out_i_4 <= (others=> '0');
   
 end Behavioral;
