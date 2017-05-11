@@ -165,6 +165,7 @@ component IPOL_1
 GENERIC(WIDTH:integer:=WIDTH);
 PORT(Clk_100MHz: in std_logic;
     Clk_250Khz: in STD_LOGIC;
+    Clk_31Khz: in STD_LOGIC;
     reset: in std_logic;    
     input: in Channels;
     output: out Channels
@@ -176,7 +177,8 @@ end component;
 component IPOL_2
 GENERIC(WIDTH:integer:=WIDTH);
 PORT(Clk_100MHz: in std_logic;
-    Clk_500Khz: in std_logic;
+    Clk_250Khz: in std_logic;
+    clk_500KHz: in STD_LOGIC;
     reset: in std_logic;
     input_r: in Signed;
     input_i: in Signed;
@@ -188,16 +190,14 @@ end component;
 component IPOL_3
 GENERIC(WIDTH:integer:=WIDTH);
 PORT(Clk_100MHz: in std_logic;
+    clk_500KHz: in STD_LOGIC;
     Clk_4Mhz: in STD_LOGIC;
     reset: in std_logic;
     input_r: in Signed;
     input_i: in Signed;
     output_r: out Signed;
     output_i: out Signed);
-end component;
-
-
-        
+end component;        
 
 --SIGNAL DECLARATIONS
 --Clocks
@@ -211,25 +211,25 @@ signal clk_31KHz : std_logic :='0';
 --ADC component
 signal adc_out : STD_LOGIC_VECTOR(WIDTH-1 downto 0);
 --mixer_down_1
-signal blocks_undec: Blocks; 		--2D array
+signal blocks_undec: Blocks;    --2D array
 --DEC_1_500
-signal blocks_dec_1: Blocks; 			--2D array
+signal blocks_dec_1: Blocks;    --2D array
 --DEC_1_250
-signal blocks_dec_2: Blocks; 			--2D array
+signal blocks_dec_2: Blocks;    --2D array
 --Mixer_down_2
-signal signals_undec: Signals; 		--3D array
+signal signals_undec: Signals;  --3D array
 --DEC_2
-signal signals_dec: Signals; 		--3D array
+signal signals_dec: Signals;    --3D array
 --Redirect
-signal signals_unpol: Signals; --3D array
+signal signals_unpol: Signals;  --3D array
 --IPOL_1
-signal signals_pol: Signals; --3D array
+signal signals_pol: Signals;    --3D array
 --Mixer_up_1
-signal blocks_unpol: Blocks; 		--2D array
+signal blocks_unpol: Blocks;    --2D array
 --IPOL_2
-signal blocks_pol_1: Blocks; 			--2D array
+signal blocks_pol_1: Blocks;    --2D array
 --IPOL_3
-signal blocks_pol_2: Blocks; 			--2D array
+signal blocks_pol_2: Blocks;    --2D array
 
 --To dac
 signal dac_in_r : signed(WIDTH-1 downto 0);
@@ -286,7 +286,7 @@ Mixer_dnw_1: Mixer_down_1
 GENERIC MAP(WIDTH => WIDTH)
 PORT MAP( 
 	clk_4MHz => clk_4MHz,
-	in_r => signed(Switches),
+	in_r => signed(adc_out),
 	in_i => (others=> '0'),
 	out_r_0 => blocks_undec(0),
 	out_i_0 => blocks_undec(1),
@@ -368,6 +368,7 @@ GENERIC MAP(WIDTH => WIDTH)
 PORT MAP( 
     Clk_100MHz => clk_100MHz,
     clk_250KHz => clk_250KHz,
+    clk_31KHz => clk_31KHz,
     reset => reset,
     input => signals_unpol(0),
     output => signals_unpol(0));
@@ -402,6 +403,7 @@ GENERIC MAP(WIDTH => WIDTH)
 PORT MAP( 
     Clk_100MHz => clk_100MHz,
     clk_500KHz => clk_500KHz,
+    clk_250KHz => clk_250KHz,
     reset => reset,
     input_r => Blocks_unpol(0),
     input_i => Blocks_unpol(1),
@@ -414,6 +416,7 @@ GENERIC MAP(WIDTH => WIDTH)
 PORT MAP( 
     Clk_100MHz => clk_100MHz,
     clk_4MHz => clk_4MHz,
+    clk_500KHz => clk_500KHz,
     reset => reset,
     input_r => Blocks_pol_1(0),
     input_i => Blocks_pol_1(1),
