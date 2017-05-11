@@ -43,7 +43,7 @@ begin
 
 filt_r: Block_Filter_250
 GENERIC MAP(WIDTH => 16,
-            N => 182)
+            N => 214)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,
@@ -56,7 +56,7 @@ PORT MAP(reset => reset,
          
 filt_i: Block_Filter_250
 GENERIC MAP(WIDTH => 16,
-            N => 182)
+            N => 214)
 PORT MAP(reset => reset,
          --start => start_r,
          clk => clk_100MHz,

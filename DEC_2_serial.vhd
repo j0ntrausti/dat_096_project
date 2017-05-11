@@ -39,7 +39,7 @@ begin
 
 filt: ChannelFilter_1
 GENERIC MAP(WIDTH => WIDTH,
-            N => 93)
+            N => 110)
 PORT MAP(reset => reset,
          --start => start_i,
          clk => clk_100MHz,
