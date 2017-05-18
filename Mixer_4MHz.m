@@ -18,8 +18,8 @@ f_c5 =  31.25e3;
 f_c6 =  62.5e3;
 f_c7 =  93.75e3;
 
-Fs_1 = 4e6;
-stop = 0.0009369825;
+Fs_1 = 5e6;
+stop = 0.007;
 t_delta_1 = 1/Fs_1;
 t_1 = 0:t_delta_1:stop;
 l_1 = length(t_1);
@@ -52,21 +52,23 @@ s_c5_2 = exp(-1i*2*pi*f_c5.*t_2);
 s_c6_2 = exp(-1i*2*pi*f_c6.*t_2);
 s_c7_2 = exp(-1i*2*pi*f_c7.*t_2);
 
-testvector = transpose(xlsread('sim_out_12_4M','D:D'));
-sim_out_b0_r = transpose(xlsread('sim_out_12_4M','F:F')); %real part of block 0 from sim
-sim_out_b0_i = transpose(xlsread('sim_out_12_4M','E:E')); %imag part of block 0 from sim
-sim_out_b0_dec_r = transpose(xlsread('sim_out_12_250k','F:F')); %real part of block 0 dec from sim
-sim_out_b0_dec_i = transpose(xlsread('sim_out_12_250k','E:E')); %imag part of block 0 dec from sim
-sim_out_ch5_r = transpose(xlsread('sim_out_12_250k','H:H')); %real part of channel 5 in block 0 from sim
-sim_out_ch5_i = transpose(xlsread('sim_out_12_250k','G:G')); %real part of channel 5 in block 0 from sim
+ testvector = transpose(xlsread('sim_out_15_5M','P:P'));
+% sim_out_b0_r = transpose(xlsread('sim_out_12_4M','F:F')); %real part of block 0 from sim
+% sim_out_b0_i = transpose(xlsread('sim_out_12_4M','E:E')); %imag part of block 0 from sim
+% sim_out_b0_dec_r = transpose(xlsread('sim_out_12_250k','F:F')); %real part of block 0 dec from sim
+% sim_out_b0_dec_i = transpose(xlsread('sim_out_12_250k','E:E')); %imag part of block 0 dec from sim
+% sim_out_ch5_r = transpose(xlsread('sim_out_12_250k','H:H')); %real part of channel 5 in block 0 from sim
+% sim_out_ch5_i = transpose(xlsread('sim_out_12_250k','G:G')); %real part of channel 5 in block 0 from sim
+dac_in_r =transpose(xlsread('sim_out_15_5M','S:S'));
+dac_in_i =transpose(xlsread('sim_out_15_5M','T:T'));
 
-block_0 = s_b0.*testvector(1:l_1); %matlab mixing of testvector to block0
-ch_5 = s_c5.*block_0; %matlab mixing of testvector to ch5
-ch_5_2 = (sim_out_b0_dec_r(1:l_2) + 1i*sim_out_b0_dec_i(1:l_2)).*s_c0_2; %matlab mixing of the dec block 0 from questa to ch 5
+%block_0 = s_b0.*testvector(1:l_1); %matlab mixing of testvector to block0
+%ch_5 = s_c5.*block_0; %matlab mixing of testvector to ch5
+%ch_5_2 = (sim_out_b0_dec_r(1:l_2) + 1i*sim_out_b0_dec_i(1:l_2)).*s_c0_2; %matlab mixing of the dec block 0 from questa to ch 5
 
 %% plotting of the testvector @6M
     
-F = testvector(1:l_1);
+F =  testvector(1:l_1);
     
 y = fft(F,l_1);
 m = abs(y);
@@ -78,9 +80,24 @@ f = (0:length(y)-1)*Fs_1/length(y);
     title('testvector')
     xlabel('f (Hz)')
     ylabel('|P1(f)|')
+    
+%% plotting of the output @6M
+    
+F =  dac_in_r(1:l_1) + 1i*dac_in_i(1:l_1);
+    
+y = fft(F,l_1);
+m = abs(y);
+f = (0:length(y)-1)*Fs_1/length(y); 
+
+    figure(2)
+    subplot(2,1,1); plot(t_1,real(F));
+    subplot(2,1,2); plot(f,m);
+    title('Questa final output')
+    xlabel('f (Hz)')
+    ylabel('|P1(f)|')
 
 %% plotting of the matlab mixed block @6M
-F = block_0;
+F = dac_in_r(1:l_1) + 1i*dac_in_i(1:l_1);
 
 y = fft(F,l_1);
 m = abs(y);
