@@ -28,7 +28,7 @@ begin
      c_i <= a_r*b_i;
  end if;
 end process;
---Truncation is WRONG!!! NEEDS TO BE FIXED!!
+
 ut_r <= c_r(2*WIDTH-2 downto WIDTH-1);
 ut_i <= c_i(2*WIDTH-2 downto WIDTH-1);
 
