@@ -19,7 +19,7 @@ f_c6 =  62.5e3;
 f_c7 =  93.75e3;
 
 Fs_1 = 5e6;
-stop = 0.024;
+stop = 0.023;
 t_delta_1 = 1/Fs_1;
 t_1 = 0:t_delta_1:stop;
 l_1 = length(t_1);
@@ -52,30 +52,30 @@ s_c5_2 = exp(-1i*2*pi*f_c5.*t_2);
 s_c6_2 = exp(-1i*2*pi*f_c6.*t_2);
 s_c7_2 = exp(-1i*2*pi*f_c7.*t_2);
 
- testvector = transpose(xlsread('sim_out_17_5M','F:F'));
- ch_0_r = transpose(xlsread('sim_out_18_5M','AM:AM')); %Channel 0
- ch_0_i = transpose(xlsread('sim_out_18_5M','AL:AL')); %Channel 0
- ch_1_r = transpose(xlsread('sim_out_18_5M','AK:AK')); %Channel 1
- ch_1_i = transpose(xlsread('sim_out_18_5M','AJ:AJ')); %Channel 1
- ch_2_r = transpose(xlsread('sim_out_18_5M','AI:AI')); %Channel 2
- ch_2_i = transpose(xlsread('sim_out_18_5M','AH:AH')); %Channel 2
- ch_3_r = transpose(xlsread('sim_out_18_5M','AG:AG')); %Channel 3
- ch_3_i = transpose(xlsread('sim_out_18_5M','AF:AF')); %Channel 3
- ch_4_r = transpose(xlsread('sim_out_18_5M','AE:AE')); %Channel 4
- ch_4_i = transpose(xlsread('sim_out_18_5M','AD:AD')); %Channel 4
- ch_5_r = transpose(xlsread('sim_out_18_5M','AC:AC')); %Channel 5
- ch_5_i = transpose(xlsread('sim_out_18_5M','AB:AB')); %Channel 5
- ch_6_r = transpose(xlsread('sim_out_18_5M','AA:AA')); %Channel 6
- ch_6_i = transpose(xlsread('sim_out_18_5M','Z:Z')); %Channel 6
- ch_7_r = transpose(xlsread('sim_out_18_5M','Y:Y')); %Channel 7
- ch_7_i = transpose(xlsread('sim_out_18_5M','X:X')); %Channel 7
+ testvector = transpose(xlsread('sim_out_19_5M','F:F'));
+ ch_0_r = transpose(xlsread('sim_out_19_5M','AM:AM')); %Channel 0
+ ch_0_i = transpose(xlsread('sim_out_19_5M','AL:AL')); %Channel 0
+ ch_1_r = transpose(xlsread('sim_out_19_5M','AK:AK')); %Channel 1
+ ch_1_i = transpose(xlsread('sim_out_19_5M','AJ:AJ')); %Channel 1
+ ch_2_r = transpose(xlsread('sim_out_19_5M','AI:AI')); %Channel 2
+ ch_2_i = transpose(xlsread('sim_out_19_5M','AH:AH')); %Channel 2
+ ch_3_r = transpose(xlsread('sim_out_19_5M','AG:AG')); %Channel 3
+ ch_3_i = transpose(xlsread('sim_out_19_5M','AF:AF')); %Channel 3
+ ch_4_r = transpose(xlsread('sim_out_19_5M','AE:AE')); %Channel 4
+ ch_4_i = transpose(xlsread('sim_out_19_5M','AD:AD')); %Channel 4
+ ch_5_r = transpose(xlsread('sim_out_19_5M','AC:AC')); %Channel 5
+ ch_5_i = transpose(xlsread('sim_out_19_5M','AB:AB')); %Channel 5
+ ch_6_r = transpose(xlsread('sim_out_19_5M','AA:AA')); %Channel 6
+ ch_6_i = transpose(xlsread('sim_out_19_5M','Z:Z')); %Channel 6
+ ch_7_r = transpose(xlsread('sim_out_19_5M','Y:Y')); %Channel 7
+ ch_7_i = transpose(xlsread('sim_out_19_5M','X:X')); %Channel 7
 % sim_out_b0_i = transpose(xlsread('sim_out_12_4M','E:E')); %imag part of block 0 from sim
 % sim_out_b0_dec_r = transpose(xlsread('sim_out_12_250k','F:F')); %real part of block 0 dec from sim
 % sim_out_b0_dec_i = transpose(xlsread('sim_out_12_250k','E:E')); %imag part of block 0 dec from sim
 % sim_out_ch5_r = transpose(xlsread('sim_out_12_250k','H:H')); %real part of channel 5 in block 0 from sim
 % sim_out_ch5_i = transpose(xlsread('sim_out_12_250k','G:G')); %real part of channel 5 in block 0 from sim
-dac_in_r =transpose(xlsread('sim_out_17_5M','C:C'));
-dac_in_i =transpose(xlsread('sim_out_17_5M','D:D'));
+dac_in_r =transpose(xlsread('sim_out_19_5M','C:C'));
+dac_in_i =transpose(xlsread('sim_out_19_5M','D:D'));
 
 %block_0 = s_b0.*testvector(1:l_1); %matlab mixing of testvector to block0
 %ch_5 = s_c5.*block_0; %matlab mixing of testvector to ch5
@@ -113,7 +113,7 @@ f = (0:length(y)-1)*Fs_1/length(y);
     
 %% plotting of the questa mixed channel 0
 
-F = ch_4_r(1:l_2) + 1i.*ch_4_i(1:l_2);
+F = ch_1_r(1:l_2) + 1i.*ch_1_i(1:l_2);
 
 y = fft(F,l_2);
 m = abs(y);
