@@ -9,7 +9,7 @@ library ieee;
 use ieee.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 
-entity IPOL_ch_filt is 
+entity IPOL_bl_filt_1  is 
 	GENERIC(WIDTH	:integer 	:=16; -- signal length
 		N :integer	:=56; -- number of taps
 		inter:integer :=10); -- interpolation factor
@@ -20,11 +20,11 @@ entity IPOL_ch_filt is
            x:IN signed(WIDTH-1 DOWNTO 0); -- input value
            y:OUT signed(WIDTH-1 DOWNTO 0); -- output value
            finished:OUT STD_LOGIC); -- finished flag
-end IPOL_ch_filt;
+end IPOL_bl_filt_1 ;
 
 
 
-architecture behaiv_arch of IPOL_ch_filt is
+architecture behaiv_arch of IPOL_bl_filt_1  is
 
 
 -- Signals
@@ -326,7 +326,7 @@ t(0)<="0000000000111011";
 		else
 			finished_sig<='1'; -- finished flag
 			finished <= '1'; -- finished flag
-	        y <= y_s(2*WIDTH-2 downto WIDTH-1); -- output
+	        y <= y_s(2*WIDTH-4 downto WIDTH-3); -- output
 		end if;
 	end if;
    
