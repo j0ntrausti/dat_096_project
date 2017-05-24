@@ -1,28 +1,21 @@
-
-
-
--- This is a Linear phase FIR filter of type 1. Has N coeff. and N-1 inputs.
--- The filter is written GENERIC so it is defined as;
---                            WIDTH = number of bits
---                            N = number of tabs   
---			      M = Channel filter type, (to maximise the available space for multiplication)
--- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs, x[n].
--- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jo³n Trausti
+-- This is a FIR filter, Has N coeff. and N-1 inputs.  
+-- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs (counted from 1), x[n].
+-- Sends out finish signal, and y[n] - same size as input.
+-- this design only works for 16 bits, but can be modified easily for other bit numbers.
 library ieee;
 use ieee.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 
 entity Block_Filter_500 is
-    GENERIC(WIDTH    :integer     :=12;
-        N :integer    :=188);
-    PORT(    reset:IN STD_LOGIC;
-           clk:IN STD_LOGIC;
-           clk625k:IN STD_LOGIC;
-           clk5M:IN STD_LOGIC;
-           x:IN signed(WIDTH-1 DOWNTO 0);
-           y:OUT signed(WIDTH-1 DOWNTO 0);
-           finished:OUT STD_LOGIC);
+    GENERIC(WIDTH    :integer     :=12; -- signal width
+        N :integer    :=188); -- tap number
+    PORT(    reset:IN STD_LOGIC; -- reset
+           clk:IN STD_LOGIC; -- calculated frequency
+           clk625k:IN STD_LOGIC; -- output frequency 
+           clk5M:IN STD_LOGIC; -- input frequency
+           x:IN signed(WIDTH-1 DOWNTO 0); -- input 
+           y:OUT signed(WIDTH-1 DOWNTO 0); -- output
+           finished:OUT STD_LOGIC); -- finished flag
 end Block_Filter_500;
 
 
@@ -31,18 +24,15 @@ architecture behaiv_arch of Block_Filter_500 is
 
 
 -- New signals
-signal i    :integer range 0 to N+3; --index for how many clkcykles the calculation have been running
-signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0';
+signal i    :integer range 0 to N+3; -- counter
+signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0'; -- flags
 signal y_s    :signed(2*WIDTH-1 downto 0);--temporary output
-signal x_sig :signed(WIDTH-1 downto 0);
 
 type a_pipe is array (0 to N-1) of signed(WIDTH-1 downto 0);
-type a_queue2multi is array (0 to N-1) of signed(WIDTH-1 downto 0);
-type a_tL is array (0 to N-1) of signed(WIDTH-1 downto 0);
 
-signal pipe    		: a_pipe;
-signal queue2multi	:a_queue2multi;
-signal t		:a_tL;
+signal pipe    		: a_pipe; -- pipeline
+signal queue2multi	:a_pipe; -- values read to multipiers 
+signal t		:a_pipe; -- coefficients
 
 
 
@@ -54,12 +44,10 @@ signal t		:a_tL;
 begin
 
 
---x_sig(WIDTH-1 downto 4) <= x;
---x_sig(3 downto 0) <= (others => '0');
 process(clk,reset)
 begin
 
-    -- This will set all the x's to zero, resetting everything.
+   -- Asynchronous reset 
     -- so when the program start all values have zeros except for the coefficients
     if(reset='1') then
         i<=0;    -- reset the counter
@@ -141,21 +129,25 @@ begin
     elsif (rising_edge(clk)) then
 --------------------------------------------------------------------    
 -----------------------------SENDING OUT ---------------------------    
---------------------------------------------------------------------       
+--------------------------------------------------------------------
+	  	-- When clk312k is activated it resets the temporary output and counters.
+	    -- activates a flag that allows the signal read values from pipeline
+	    -- into "queue2multi" which is used to run through the multipliers.
         if(clk625k = '1') then   
-		Load_On<='1';
-        	y_s <= (others => '0');
+		Load_On<='1'; -- flag
+        	y_s <= (others => '0'); -- temp output
             	finished_sig <= '0';
            	finished<='0';
-         	i<=0;
+         	i<=0; -- counter
 	elsif(finished_sig = '0' AND Load_On='0' AND GoOn='1') then
+		-- multiplying and outputting
 		if(i<N) then
-			y_s <= y_s + (queue2multi(i)*t(i));
-			i <= i+1;
+			y_s <= y_s + (queue2multi(i)*t(i)); -- multiplying and adding to the temporary sum
+			i <= i+1; -- increments
 		else
 			finished <= '1';
                 	finished_sig <= '1';
-               		y <= y_s(2*WIDTH-2 downto WIDTH-1);
+               		y <= y_s(2*WIDTH-2 downto WIDTH-1); -- outputs, shifts and truncate.
 		end if;
 		
         end if;
@@ -164,13 +156,13 @@ begin
 --------------------------------------------------------------------  
 
 	if (clk5M='1' ) then 
-		pipe <= signed(x)&pipe(0 to pipe'length-2);
+		pipe <= signed(x)&pipe(0 to pipe'length-2); --reads new value into the pipeline, shifts everything
 	elsif(Load_On ='1') then
 		for j in 0 to N-1 loop
-             	   queue2multi(j)<= pipe(j);
+             	   queue2multi(j)<= pipe(j); -- Loads values from the pipeline
          	end loop;
-		GoOn<='1';  
-		Load_On<='0';
+		GoOn<='1';  -- activates the first run through the multiplers
+		Load_On<='0'; -- activates the multipliers
 	end if;
 
     end if;
