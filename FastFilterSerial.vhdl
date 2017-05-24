@@ -1,30 +1,23 @@
-
-
-
--- This is a Linear phase FIR filter of type 1. Has N coeff. and N-1 inputs.
--- The filter is written GENERIC so it is defined as;
---                            WIDTH = number of bits
---                            N = number of tabs   
---			      M = Channel filter type, (to maximise the available space for multiplication)
--- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs, x[n].
--- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jo³n Trausti
+-- This is a FIR filter, Has N coeff. and N-1 inputs.  
+-- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs (counted from 1), x'array inputs from different channels.
+-- Sends out finish signal and output of the filter, y'array  - same length as input.
+-- this design only works for 16 bits, but can be modified easily for other bit numbers. 
 library ieee;
 use ieee.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 use work.Read_package.all;
 
 entity ChannelFilter_1 is
-    GENERIC(WIDTH    :integer     :=12;
-        N :integer    :=188);
+    GENERIC(WIDTH    :integer     :=12; -- number of bits
+        N :integer    :=188); -- number of taps
 	    --M :integer :=0);
-    PORT(    reset:IN STD_LOGIC;
-           clk:IN STD_LOGIC;
-           clk31K:IN STD_LOGIC;
-           clk312K:IN STD_LOGIC;
-           x:IN Channels;
-           y:OUT Channels;
-           finished:OUT STD_LOGIC);
+    PORT(    reset:IN STD_LOGIC; -- reset
+           clk:IN STD_LOGIC; -- calculated frequency
+           clk31K:IN STD_LOGIC; -- output frequency 
+           clk312K:IN STD_LOGIC; -- input frequency
+           x:IN Channels; -- inputs 
+           y:OUT Channels; -- outputs
+           finished:OUT STD_LOGIC); -- finished flag
 end ChannelFilter_1;
 
 
@@ -33,11 +26,10 @@ architecture behaiv_arch of ChannelFilter_1 is
 
 
 -- New signals
-signal M    :integer:=0;
 signal Ch   :integer:=16; --nr of channels (real and imaginary)
-signal i    :integer range 0 to N+3; --index for how many clkcykles the calculation have been running
-signal k    :integer range 0 to 16:=0; --
-signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0';
+signal i    :integer range 0 to N+3; -- counter
+signal k    :integer range 0 to 16:=0; -- counter
+signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0'; -- flags
 signal y_s    :signed(2*WIDTH-1 downto 0);--temporary output
 
 
@@ -51,9 +43,9 @@ type b_array is array (0 to 16-1) of a_array;
 -- Old signals
 
     
-    signal t	:a_array;    
-    signal queue2multi	:b_array;
-    signal pipe		   :b_array;
+    signal t	:a_array;    -- coefficients
+    signal queue2multi	:b_array; -- input to the multipliers
+    signal pipe		   :b_array; -- pipeline
 
 begin
 
@@ -61,7 +53,7 @@ begin
 process(clk,reset)
 begin
 
-    -- This will set all the x's to zero, resetting everything.
+    -- Asynchronous reset 
     -- so when the program start all values have zeros except for the coefficients
     if(reset='1') then
         i<=0;    -- reset the counter
@@ -203,21 +195,26 @@ t(0)<="0000000000010001";
 --------------------------------------------------------------------    
 -----------------------------SENDING OUT ---------------------------    
 --------------------------------------------------------------------       
+	     -- When clk31k is activated it resets temp outputs, counters,
+	    -- activates a flag that allows the signal read values from pipeline
+	    -- into "queue2multi" which is used to run through the multipliers sequantially.
+	    -- this filter uses two multipliers at the same time
+	    -- due to high amount of taps.
      if(clk31K = '1') then   
-		    Load_On<='1';
+		Load_On<='1';
         	y_s <= (others => '0');
-            finished_sig <= '0';
+            	finished_sig <= '0';
            	finished<='0';
          	i<=0;
-		    k<=0;
+		k<=0;
 	elsif(finished_sig = '0' AND Load_On='0' AND GoOn='1') then
 		if(i<N AND k<16) then
-			y_s <= y_s + (queue2multi(k)(i)*t(i));
+			y_s <= y_s + (queue2multi(k)(i)*t(i)); -- runs through all the channel sequentially
 			i <= i+1;
 		elsif(k<16) then
-            y(k) <= y_s(2*WIDTH-2 downto WIDTH-1);
+            y(k) <= y_s(2*WIDTH-2 downto WIDTH-1); -- outputs everything
             y_s <= (others => '0'); 
-            k<=k+1;
+            k<=k+1; 
             i<=0;
         else 
             finished <= '1';
@@ -231,33 +228,16 @@ t(0)<="0000000000010001";
 
 	if (clk312K='1' ) then 
 		for i in 0 to 16-1 loop
-		  pipe(i) <= x(i) & pipe(i)(0 to N-2) ;
-		  --pipe(i) <= x(i) & "000000000000000000" + pipe(i)(0 to N-2) ;
---		  pipe(1) <= x(1) & pipe(1)(0 to N-2);
---		  pipe(2) <= x(2) & pipe(2)(0 to N-2);
---		  pipe(3) <= x(3) & pipe(3)(0 to N-2);
---		  pipe(4) <= x(4) & pipe(4)(0 to N-2);
---		  pipe(5) <= x(5) & pipe(5)(0 to N-2);
---		  pipe(6) <= x(6) & pipe(6)(0 to N-2);
---		  pipe(7) <= x(7) & pipe(7)(0 to N-2);
---		  pipe(8) <= x(8) & pipe(8)(0 to N-2);
---		  pipe(9) <= x(9) & pipe(9)(0 to N-2);
---		  pipe(10) <= x(10) & pipe(10)(0 to N-2);
---		  pipe(11) <= x(11) & pipe(11)(0 to N-2);
---		  pipe(12) <= x(12) & pipe(12)(0 to N-2);
---		  pipe(13) <= x(13) & pipe(13)(0 to N-2);
---		  pipe(14) <= x(14) & pipe(14)(0 to N-2);
---		  pipe(15) <= x(15) & pipe(15)(0 to N-2);
-		  
+		  pipe(i) <= x(i) & pipe(i)(0 to N-2) ; -- inputs every input value to the pipeline
 	    end loop;
 	elsif(Load_On ='1') then
 		for i in 0 to 16-1 loop
 		  for j in 0 to N-1 loop
-            queue2multi(i)(j)<= pipe(i)(j);
+            queue2multi(i)(j)<= pipe(i)(j); -- loads the array with values from pipeline
           end loop;
         end loop;
-		GoOn<='1';  
-		Load_On<='0';
+		GoOn<='1';   -- activates the multipliers (the first run)
+		Load_On<='0'; -- activates the multipliers
 	end if;
 
     end if;
