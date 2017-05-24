@@ -1,14 +1,11 @@
 
 
 
--- This is a Linear phase FIR filter of type 1. Has N coeff. and N-1 inputs.
--- The filter is written GENERIC so it is defined as;
---                            WIDTH = number of bits
---                            N = number of tabs   
---			      M = Channel filter type, (to maximise the available space for multiplication)
--- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs, x[n].
--- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jo³n Trausti
+-- This is a FIR filter, Has N coeff. and N-1 inputs.  
+-- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs (counted from 1), x[n].
+-- Sends out finish signal, and y[n] - same size as input.
+-- this design only works for 16 bits, but can be modified easily for other bit numbers. 
+
 library ieee;
 use ieee.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
@@ -17,12 +14,12 @@ entity Block_Filter_250 is
     GENERIC(WIDTH    :integer     :=12;
         N :integer    :=188);
     PORT(    reset:IN STD_LOGIC;
-           clk:IN STD_LOGIC;
-           clk312K:IN STD_LOGIC;
-           clk625K:IN STD_LOGIC;
-           x:IN signed(WIDTH-1 DOWNTO 0);
-           y:OUT signed(WIDTH-1 DOWNTO 0);
-           finished:OUT STD_LOGIC);
+           clk:IN STD_LOGIC;  -- calculating frequency
+           clk312K:IN STD_LOGIC; -- output frequency
+           clk625K:IN STD_LOGIC; -- input frequency
+           x:IN signed(WIDTH-1 DOWNTO 0); -- input value
+           y:OUT signed(WIDTH-1 DOWNTO 0); -- output value
+           finished:OUT STD_LOGIC); -- finished signal
 end Block_Filter_250;
 
 
@@ -31,35 +28,23 @@ architecture behaiv_arch of Block_Filter_250 is
 
 
 -- New signals
-signal i    :integer range 0 to N+3; --index for how many clkcykles the calculation have been running
-signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0';
-signal a_s,b_s    :signed(2*WIDTH-1 downto 0);--temporary output
-signal x_sig :signed(WIDTH-1 downto 0);
+signal i    :integer range 0 to N+3; --index for how many clk cykles the calculation have been running
+signal finished_sig,GoOn,Load_On    :STD_LOGIC :='0'; -- flags used in design
+signal a_s,b_s    :signed(2*WIDTH-1 downto 0); -- output storage from multipliers
 
-type a_pipe is array (0 to N-1) of signed(WIDTH-1 downto 0);
-type a_queue2multi is array (0 to N-1) of signed(WIDTH-1 downto 0);
-type a_tL is array (0 to N-1) of signed(WIDTH-1 downto 0);
+type a_pipe is array (0 to N-1) of signed(WIDTH-1 downto 0); 
 
-signal pipe    		: a_pipe;
-signal queue2multi	:a_queue2multi;
-signal t		:a_tL;
-
-
-
-
--- Old signals
-
-
+signal pipe    		: a_pipe; -- array for the pipeline
+signal queue2multi	:a_pipe; -- input to the multipliers
+signal t		:a_pipe; -- filter coefficients
 
 begin
 
 
---x_sig(WIDTH-1 downto 4) <= x;
---x_sig(3 downto 0) <= (others => '0');
 process(clk,reset)
 begin
 
-    -- This will set all the x's to zero, resetting everything.
+    -- Asynchronous reset 
     -- so when the program start all values have zeros except for the coefficients
     if(reset='1') then
         i<=0;    -- reset the counter
@@ -74,8 +59,8 @@ begin
         end loop;
         
 
-        -- here the coeff. comes in for ex.
-t(0)<="0000000000111011";
+        -- here the coeff. are specified
+	t(0)<="0000000000111011";
         t(1)<="0000000010100010";
         t(2)<="0000000011111111";
         t(3)<="0000000011110100";
@@ -298,38 +283,45 @@ t(0)<="0000000000111011";
     elsif (rising_edge(clk)) then
 --------------------------------------------------------------------    
 -----------------------------SENDING OUT ---------------------------    
---------------------------------------------------------------------       
-        if(clk312K = '1') then   
-		Load_On<='1';
+--------------------------------------------------------------------    
+	  
+	    -- When clk312k is activated it resets everything,
+	    -- activates a flag that allows the signal read values from pipeline
+	    -- into "queue2multi" which is used to run through the multipliers.
+	    -- this filter uses two multipliers at the same time
+	    -- due to high amount of taps.
+        if(clk312K = '1') then   -- 
+		Load_On<='1';  -- flag
         	a_s <= (others => '0');
         	b_s <= (others => '0');
             	finished_sig <= '0';
            	finished<='0';
          	i<=0;
 	elsif(finished_sig = '0' AND Load_On='0' AND GoOn='1') then
+		-- multipliers and output
 		if(i<N/2) then
-			a_s <= a_s + (queue2multi(2*i)*t(2*i));
-			b_s <= b_s + (queue2multi(2*i+1)*t(2*i+1));
-			i <= i+1;
+			a_s <= a_s + (queue2multi(2*i)*t(2*i)); -- runs the queue through half of the taps
+			b_s <= b_s + (queue2multi(2*i+1)*t(2*i+1)); -- runs the queue through the other half
+			i <= i+1; 
 		else
 			finished <= '1';
                 	finished_sig <= '1';
-               		y <= a_s(2*WIDTH-2 downto WIDTH-1) + b_s(2*WIDTH-2 downto WIDTH-1);
+               		y <= a_s(2*WIDTH-2 downto WIDTH-1) + b_s(2*WIDTH-2 downto WIDTH-1); -- output
 		end if;
 		
         end if;
 --------------------------------------------------------------------    
 -----------------------------READING IN ----------------------------    
---------------------------------------------------------------------  
-
+-------------------------------------------------------------------- 
+		
 	if (clk625K='1' ) then 
-		pipe <= signed(x)&pipe(0 to pipe'length-2);
+		pipe <= signed(x)&pipe(0 to pipe'length-2); --reads new value into the pipeline, shifts everything
 	elsif(Load_On ='1') then
 		for j in 0 to N-1 loop
-             	   queue2multi(j)<= pipe(j);
+             	   queue2multi(j)<= pipe(j); -- Loads values from the pipeline
          	end loop;
-		GoOn<='1';  
-		Load_On<='0';
+		GoOn<='1';  -- activates the first run through the multiplers
+		Load_On<='0'; -- activates the multipliers
 	end if;
 
     end if;
