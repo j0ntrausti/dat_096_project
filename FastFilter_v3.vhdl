@@ -12,7 +12,7 @@ use ieee.numeric_std.all;
 entity IPOL_bl_filt_1  is 
 	GENERIC(WIDTH	:integer 	:=16; -- signal length
 		N :integer	:=56; -- number of taps
-		inter:integer :=10); -- interpolation factor
+		inter:integer :=8); -- interpolation factor
 	PORT(	reset:IN STD_LOGIC;
            clk:IN STD_LOGIC; -- calculated frequency
 	   clk312k:IN STD_LOGIC; -- input frequency
