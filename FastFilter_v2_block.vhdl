@@ -1,71 +1,64 @@
 
--- CHANNEL FILTER FOR INTERPOLATION OF ... N, this
+-- This is a FIR filter interpolator, Has N coeff. and N-1 inputs.  
+-- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs (counted from 1), inter interpolation factor
+-- 	     x'array inputs from different channels.
+-- Sends out finish signal and output of the filter, y'array  - same length as input.
+-- this design only works for 16 bits, but can be modified easily for other bit numbers.
 
--- This is a Linear phase FIR filter of type 1. Has N coeff. and N-1 inputs. 
--- The filter is written GENERIC so it is defined as;
---							WIDTH = number of bits
---							N = number of tabs   
--- Takes in, GENERIC values WIDTH (nr. of bits), N number of tabs, x[n]. 
--- Sends out finihs signal, and y[n] (note double size, need to take the 12 last bits)
--- Authors: Jón Trausti
+-- interpolation is handled by hopping over the taps in the multiplier by the interpolation factor
 library ieee;
 use ieee.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 
-entity IPOL_bl_filt_2 is 
-	GENERIC(WIDTH	:integer 	:=16;
-		N :integer	:=56;
-		inter:integer :=2);
+entity IPOL_bl_filt_2  is 
+	GENERIC(WIDTH	:integer 	:=16; -- signal length
+		N :integer	:=56; -- number of taps
+		inter:integer :=2); -- interpolation factor
 	PORT(	reset:IN STD_LOGIC;
-           clk:IN STD_LOGIC;
-		   clk500k:IN STD_LOGIC;
-           clk4M:IN STD_LOGIC;
-           x:IN signed(WIDTH-1 DOWNTO 0);
-           y:OUT signed(WIDTH-1 DOWNTO 0);
-           finished:OUT STD_LOGIC);
-end IPOL_bl_filt_2;
+           clk:IN STD_LOGIC; -- calculated frequency
+	   clk500k:IN STD_LOGIC; -- input frequency
+           clk4M:IN STD_LOGIC; -- output -frequency
+           x:IN signed(WIDTH-1 DOWNTO 0); -- input value
+           y:OUT signed(WIDTH-1 DOWNTO 0); -- output value
+           finished:OUT STD_LOGIC); -- finished flag
+end IPOL_bl_filt_2 ;
 
 
 
-architecture behaiv_arch of IPOL_bl_filt_2 is
+architecture behaiv_arch of IPOL_bl_filt_2  is
 
 
 -- Signals
-signal i,k	:integer range 0 to N; --index for how many clkcykles the calculation have been running
-signal finished_sig,GoOn    :STD_LOGIC :='0';
+signal i,k	:integer range 0 to N; -- counters
+signal finished_sig,GoOn    :STD_LOGIC :='0'; -- flags
 
 -- Array types
-type a_array is array (0 to (N-1)) of signed(WIDTH-1 downto 0);
+type a_array is array (0 to (N-1)) of signed(WIDTH-1 downto 0); 
 type p_array is array (0 to (N/inter -1)) of signed(WIDTH-1 downto 0);
 
 -- Array Signals
-signal t		:a_array;
-signal pipe		:p_array;
+signal t		:a_array; -- coefficients
+signal pipe		:p_array; -- pipeline
 
 
 
--- Old signals
 
-signal y_s,a_s	:signed(2*WIDTH-1 downto 0);--temporary output
-signal x_sig: signed(WIDTH-1 downto 0);
+signal y_s	:signed(2*WIDTH-1 downto 0); --temporary output
 
 begin
+	
 
 
-
---x_sig(WIDTH-1 downto 4) <= x;
---x_sig(3 downto 0) <= (others => '0');
 
 process(clk,reset)
 begin
 
-	-- This will set all the x's to zero, resetting everything.
-	-- so when the program start all values have zeros except for the coefficients
+	-- Asynchronous reset
+	-- resets all the vital signals, and inputs the coefficient values
 	if(reset='1') then
 		 -- Pretty much same as start, just double sec. since start is input signal
 		i<=0;	-- reset the counter 
 		k<=0;	
-		a_s <= (others => '0');
 		y_s <= (others => '0');
 		finished <= '0';
 		finished_sig <= '1';	
@@ -75,7 +68,6 @@ begin
 
 		
 		
-		-- here the coeff. comes in for ex. 
 t(0)<="1111111111100111";
         t(1)<="1111111111011111";
         t(2)<="1111111111001011";
@@ -144,18 +136,18 @@ t(0)<="1111111111100111";
 
 
 
-
 	elsif (rising_edge(clk)) then
 --------------------------------------------------------------------    
 -----------------------------READING IN ----------------------------    
 --------------------------------------------------------------------  
 
-	-- Single clock to start the filter
+	-- outputs and inputs at the same clock frequency
 	
 		if (clk4M='1') then 
-			if (clk500K = '1') then
-				pipe <= signed(x)&pipe(0 to pipe'length-2);
-				GoOn<='1';
+			-- reads into the pipeline at slower rate
+			if (clk500k = '1') then
+				pipe <= signed(x)&pipe(0 to pipe'length-2); -- the pipeline
+				GoOn<='1'; -- activates the multiplies
 				k<=0;
 			else		
 				k<=k+1;			
@@ -166,22 +158,27 @@ t(0)<="1111111111100111";
 			finished_sig<='0';
 	         	i<=0;
 			
-			y_s <= (others => '0');
+			y_s <= (others => '0'); -- reset the tempory output
 			
 		elsif(    (i= (N/inter - 1)) AND GoOn<='1'  ) then  
-				y_s <= (( pipe(i)* t( inter*(i)) ) +y_s); 
+				y_s <= (( pipe(i)* t( inter*(i)) ) +y_s); -- the last multiply
 				i <= i+1;
 			
 		elsif(    (i< (N/inter - 1)) AND GoOn<='1'  ) then  
-				y_s <= (( pipe(i)* t( inter*(i) + k ) ) +y_s); 
+				y_s <= (( pipe(i)* t( inter*(i) + k ) ) +y_s); -- the rest of the multiply
 				i <= i+1;
 		else
-			finished_sig<='1';
-			finished <= '1';
-	        y <= y_s(2*WIDTH-2 downto WIDTH-1);
+			finished_sig<='1'; -- finished flag
+			finished <= '1'; -- finished flag
+	        y <= y_s(2*WIDTH-4 downto WIDTH-3); -- output
 		end if;
 	end if;
    
 end process;
 
 end behaiv_arch;
+
+
+
+
+		
