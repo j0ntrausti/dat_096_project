@@ -1,0 +1,256 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dZ:/Polyphase
+Ebitmulti
+Z0 w1492781631
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z4 dZ:/ChannelFilters
+Z5 8Z:/ChannelFilters/BitMulti.vhdl
+Z6 FZ:/ChannelFilters/BitMulti.vhdl
+l0
+L17
+VI=SCkleP7U@Lljn^oQK?b2
+!s100 gnKz`lm:;OZPiS_ZXJA_U0
+Z7 OL;C;10.5b;63
+32
+Z8 !s110 1493299082
+!i10b 1
+Z9 !s108 1493299082.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/ChannelFilters/BitMulti.vhdl|
+Z11 !s107 Z:/ChannelFilters/BitMulti.vhdl|
+!i113 0
+Z12 o-work work -2002 -explicit
+Z13 tExplicit 1 CvgOpt 0
+Aarch_bitmulti
+R1
+R2
+R3
+DEx4 work 8 bitmulti 0 22 I=SCkleP7U@Lljn^oQK?b2
+l42
+L29
+V:hnl<0ERhm1Z0cUQlkYE@2
+!s100 HOmo5Sk37X0cXDiE3LlYK1
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 0
+R12
+R13
+Echannelfilter_1
+Z14 w1493297930
+R1
+R2
+R3
+R4
+Z15 8Z:\ChannelFilters\ChannelFilter_1.vhdl
+Z16 FZ:\ChannelFilters\ChannelFilter_1.vhdl
+l0
+L14
+VkFQ_nlVfDdWKabla3G>oo0
+!s100 VT5SlT>gd2b=4i>mmUM:l2
+R7
+32
+R8
+!i10b 1
+R9
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:\ChannelFilters\ChannelFilter_1.vhdl|
+Z18 !s107 Z:\ChannelFilters\ChannelFilter_1.vhdl|
+!i113 0
+R12
+R13
+Abehaiv_arch
+R1
+R2
+R3
+DEx4 work 15 channelfilter_1 0 22 kFQ_nlVfDdWKabla3G>oo0
+l70
+L28
+V3FZn]g]_a2>8lZRdea:>b3
+!s100 ^[PTlDlhjcLNY1^I@gMOi1
+R7
+32
+R8
+!i10b 1
+R9
+R17
+R18
+!i113 0
+R12
+R13
+Echannelfilter_2
+Z19 w1493298078
+R1
+R2
+R3
+R4
+Z20 8Z:\ChannelFilters\ChannelFilter_2.vhdl
+Z21 FZ:\ChannelFilters\ChannelFilter_2.vhdl
+l0
+L14
+VbCNDN[TP4::DCDQlN`Zo]3
+!s100 lzbK<4KR4Fz8z22dM^Okm3
+R7
+32
+R8
+!i10b 1
+R9
+Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:\ChannelFilters\ChannelFilter_2.vhdl|
+Z23 !s107 Z:\ChannelFilters\ChannelFilter_2.vhdl|
+!i113 0
+R12
+R13
+Abehaiv_arch
+R1
+R2
+R3
+DEx4 work 15 channelfilter_2 0 22 bCNDN[TP4::DCDQlN`Zo]3
+l71
+L28
+VNPgG7kg`]I??1ZhXb9j;<1
+!s100 ;7cW<mHlc<XWdzjIZ0TG63
+R7
+32
+R8
+!i10b 1
+R9
+R22
+R23
+!i113 0
+R12
+R13
+Echannelfilter_3
+Z24 w1493299081
+R1
+R2
+R3
+R4
+Z25 8Z:/ChannelFilters/ChannelFilter_3.vhdl
+Z26 FZ:/ChannelFilters/ChannelFilter_3.vhdl
+l0
+L14
+VhZC]0VfD^5S?zdgeinGZ92
+!s100 ZG_@KOCRQTV@KE_NK;d1M3
+R7
+32
+Z27 !s110 1493299083
+!i10b 1
+R9
+Z28 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/ChannelFilters/ChannelFilter_3.vhdl|
+Z29 !s107 Z:/ChannelFilters/ChannelFilter_3.vhdl|
+!i113 0
+R12
+R13
+Abehaiv_arch
+R1
+R2
+R3
+DEx4 work 15 channelfilter_3 0 22 hZC]0VfD^5S?zdgeinGZ92
+l70
+L28
+VmGO@aoeadM=EzJn^RfWDU1
+!s100 >iAA8cV2ZP<WTD398^ILB1
+R7
+32
+R27
+!i10b 1
+R9
+R28
+R29
+!i113 0
+R12
+R13
+Efastfilter
+Z30 w1492782058
+R1
+R2
+R3
+R4
+R25
+R26
+l0
+L14
+V2f]fU]kVTef9SXdYklg:D0
+!s100 oM13Zg:kjP^Bj9ROA>;7h1
+R7
+32
+Z31 !s110 1493297894
+!i10b 1
+Z32 !s108 1493297894.000000
+R28
+R29
+!i113 0
+R12
+R13
+Abehaiv_arch
+R1
+R2
+R3
+DEx4 work 10 fastfilter 0 22 2f]fU]kVTef9SXdYklg:D0
+l70
+L28
+Vzgmn7PEP_N]7Xc`9mlY;11
+!s100 7@:m4kPjLLMefn2G[8MKh2
+R7
+32
+R31
+!i10b 1
+R32
+R28
+R29
+!i113 0
+R12
+R13
+Efastfiltertb
+Z33 w1492780609
+R1
+R2
+R3
+R4
+Z34 8Z:/ChannelFilters/FastFiltertb.vhdl
+Z35 FZ:/ChannelFilters/FastFiltertb.vhdl
+l0
+L5
+VHOh:C^B6?cVnhAklJRVff3
+!s100 660>a8U:deO_F7C:@oz851
+R7
+32
+R8
+!i10b 1
+R9
+Z36 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/ChannelFilters/FastFiltertb.vhdl|
+Z37 !s107 Z:/ChannelFilters/FastFiltertb.vhdl|
+!i113 0
+R12
+R13
+Aarch_fastfiltertb
+R1
+R2
+R3
+DEx4 work 12 fastfiltertb 0 22 HOh:C^B6?cVnhAklJRVff3
+l32
+L10
+VTlJmKO`zJzM3hSTBQbz`Q0
+!s100 ;dmkm:4DHMeX3h:gP3<l:2
+R7
+32
+R8
+!i10b 1
+R9
+R36
+R37
+!i113 0
+R12
+R13

@@ -1,0 +1,28 @@
+Z:/filter/FastFilter.vhdl {1 {vcom -work work -2002 -explicit -vopt -stats=none Z:/filter/FastFilter.vhdl
+QuestaSim-64 vcom 10.4a Compiler 2015.03 Mar 25 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity FastFilter
+-- Compiling architecture behaiv_arch of FastFilter
+
+} {} {}} Z:/filter/BitMulti.vhdl {1 {vcom -work work -2002 -explicit -vopt -stats=none Z:/filter/BitMulti.vhdl
+QuestaSim-64 vcom 10.4a Compiler 2015.03 Mar 25 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity BitMulti
+-- Compiling architecture arch_BitMulti of BitMulti
+
+} {} {}} Z:/filter/FastFiltertb.vhdl {1 {vcom -work work -2002 -explicit -vopt -stats=none Z:/filter/FastFiltertb.vhdl
+QuestaSim-64 vcom 10.4a Compiler 2015.03 Mar 25 2015
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity FastFiltertb
+-- Compiling architecture arch_FastFiltertb of FastFiltertb
+
+} {} {}}

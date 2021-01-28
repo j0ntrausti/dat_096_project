@@ -1,0 +1,152 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dZ:/
+T_opt
+!s110 1492603578
+VfR>W6N`zFf9eCYilK>COb1
+Z0 04 12 17 work fastfiltertb arch_fastfiltertb 1
+=1-b8ca3a9c01e4-58f752ba-225-1a68
+Z1 o-quiet -auto_acc_if_foreign -work work
+tCvgOpt 0
+n@_opt
+OL;O;10.5b;63
+dZ:/
+T_opt1
+!s110 1492635382
+V[84>zE3@`M]G_DA^4K<^k1
+R0
+=3-d017c28b441f-58f7cef5-2e3-c80
+R1
+n@_opt1
+OL;O;10.4a;61
+dZ:/
+Ebitmulti
+Z2 w1492725580
+Z3 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z4 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z5 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z6 dZ:/filter
+Z7 8Z:/filter/BitMulti.vhdl
+Z8 FZ:/filter/BitMulti.vhdl
+l0
+L7
+Vm9@Zikh2SmaN^PaC<;Sef3
+!s100 bOG<f0VeKab5EP0VRH3La0
+Z9 OL;C;10.4a;61
+32
+Z10 !s110 1492727826
+!i10b 1
+Z11 !s108 1492727826.000000
+Z12 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/filter/BitMulti.vhdl|
+Z13 !s107 Z:/filter/BitMulti.vhdl|
+!i113 0
+Z14 o-work work -2002 -explicit
+Z15 tExplicit 1
+Aarch_bitmulti
+R3
+R4
+R5
+DEx4 work 8 bitmulti 0 22 m9@Zikh2SmaN^PaC<;Sef3
+32
+!s110 1492727827
+l32
+L19
+VIVBDX_4=cCEWVW?_Y[Q1@0
+!s100 V87S47z05k3b311cV3Y620
+R9
+!i10b 1
+R11
+R12
+R13
+!i113 0
+R14
+R15
+Efastfilter
+Z16 w1492727824
+R3
+R4
+R5
+R6
+Z17 8Z:/filter/FastFilter.vhdl
+Z18 FZ:/filter/FastFilter.vhdl
+l0
+L14
+Vj[ST@WfBPOPe0dJ1PDF@j1
+!s100 oM13Zg:kjP^Bj9ROA>;7h1
+R9
+32
+R10
+!i10b 1
+Z19 !s108 1492727825.000000
+Z20 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/filter/FastFilter.vhdl|
+Z21 !s107 Z:/filter/FastFilter.vhdl|
+!i113 0
+R14
+R15
+Abehaiv_arch
+R3
+R4
+R5
+DEx4 work 10 fastfilter 0 22 j[ST@WfBPOPe0dJ1PDF@j1
+32
+R10
+l70
+L28
+VObPHR:EF?F6bZ5kO?5C>]0
+!s100 VQigRQzHdHaiBn6ozP^JO2
+R9
+!i10b 1
+R19
+R20
+R21
+!i113 0
+R14
+R15
+Efastfiltertb
+Z22 w1492601052
+R3
+R4
+R5
+R6
+Z23 8Z:/filter/FastFiltertb.vhdl
+Z24 FZ:/filter/FastFiltertb.vhdl
+l0
+L5
+V:A<^NXH2I:A5o1nSD2g011
+!s100 660>a8U:deO_F7C:@oz851
+R9
+32
+R10
+!i10b 1
+R11
+Z25 !s90 -reportprogress|300|-work|work|-2002|-explicit|-vopt|-stats=none|Z:/filter/FastFiltertb.vhdl|
+Z26 !s107 Z:/filter/FastFiltertb.vhdl|
+!i113 0
+R14
+R15
+Aarch_fastfiltertb
+R3
+R4
+R5
+DEx4 work 12 fastfiltertb 0 22 :A<^NXH2I:A5o1nSD2g011
+32
+R10
+l32
+L10
+VGdiSF@IHZiMJbl[N;3dY`3
+!s100 JdzP?HHjEeGNnQGfG3EV63
+R9
+!i10b 1
+R11
+R25
+R26
+!i113 0
+R14
+R15
